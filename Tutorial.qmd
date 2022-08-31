@@ -1,0 +1,53 @@
+---
+title: "R-Tutorial"
+format: 
+  revealjs:
+    theme: dark
+knitr:
+  opts_chunk: 
+    echo: true
+---
+<!-- https://quarto.org/docs/reference/formats/presentations/revealjs.html -->
+
+# Intro
+## Was ist R?
+
+- Statistik Software und Programmiersprache
+- 1995 von R. Gentleman und R. Ihaka entwickelt
+- Open source :[http://www.r-project.org](http://www.r-project.org){width=30%} 
+![](images/Rlogo.png){width="100"}
+- Am besten mit passender IDE zu verwenden ![](images/RStudio.png){width="100"}
+
+## Setup
+
+Hier erklären wie die Leute zum Docker-Container mit vorbereiteten Skripten kommen
+
+## RStudio
+Wir schauen uns gemeinsam RStudio an.
+
+## R als Taschenrechner
+- In seiner einfachsten Funktion kann R wie ein Taschenrechner verwendet werden
+- Zeilen können einzeln nacheinander oder im Block ausgeführt werden
+```{.r code-line-numbers="1|2|3|1-3"}
+1+3
+4/2
+3*5^7/(9-2)
+```
+
+:::{.callout-tip}
+Code markieren und `Strg + Enter` drücken.
+:::
+
+
+## b
+
+- Mit `#` können Zeilen auskommentiert werden:
+
+```{r}
+#10-4
+```
+
+:::{.callout-tip}
+Keyboard-Shortcut `Strg + Shift + c`
+:::
+
