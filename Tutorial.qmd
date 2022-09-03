@@ -7,47 +7,381 @@ knitr:
   opts_chunk: 
     echo: true
 ---
+
 <!-- https://quarto.org/docs/reference/formats/presentations/revealjs.html -->
 
 # Intro
+
 ## Was ist R?
 
-- Statistik Software und Programmiersprache
-- 1995 von R. Gentleman und R. Ihaka entwickelt
-- Open source :[http://www.r-project.org](http://www.r-project.org){width=30%} 
-![](images/Rlogo.png){width="100"}
-- Am besten mit passender IDE zu verwenden ![](images/RStudio.png){width="100"}
+-   Statistik Software und Programmiersprache
+-   1995 von R. Gentleman und R. Ihaka entwickelt
+-   Open source: [http://www.r-project.org](http://www.r-project.org){width="30%"} ![](images/Rlogo.png){width="100"}
+-   Am besten mit passender IDE zu verwenden ![](images/RStudio.png){width="100"}
 
-## Setup
+## Aufbau
+
+-   Bei Installation von R erhält man das sog. *base R*, das alle wichtigsten und grundsätzlichen Funktionalitäten enthält
+-   Zusätzliche Funktionen können als R-Pakete innerhalb der Session nachinstalliert werden.
+-   Jeder kann R-Pakete schreiben und zur Verfügung stellen.
+-   Zentrale Sammelstelle für R-Pakete ist das \*Comprehensive R Archive Network" ([CRAN](https://cran.r-project.org/))
+- Pubklikation auf CRAN erfordert einen Mindeststandard an technischer Qualität (keine inhaltliche Richtigkeit!) und ist einem Review-Prozess unterworfen.
+
+## Tutorial Setup
 
 Hier erklären wie die Leute zum Docker-Container mit vorbereiteten Skripten kommen
 
 ## RStudio
+
 Wir schauen uns gemeinsam RStudio an.
 
-## R als Taschenrechner
-- In seiner einfachsten Funktion kann R wie ein Taschenrechner verwendet werden
-- Zeilen können einzeln nacheinander oder im Block ausgeführt werden
-```{.r code-line-numbers="1|2|3|1-3"}
+## Code ausführen
+
+-   In seiner einfachsten Funktion kann R wie ein Taschenrechner verwendet werden
+-   Zeilen können einzeln nacheinander oder im Block ausgeführt werden
+
+``` {.r code-line-numbers="1|2|3|1-3"}
 1+3
 4/2
 3*5^7/(9-2)
 ```
 
-:::{.callout-tip}
+::: callout-tip
 Code markieren und `Strg + Enter` drücken.
 :::
 
+## Kommentieren
 
-## b
-
-- Mit `#` können Zeilen auskommentiert werden:
+-   Mit `#` können Zeilen auskommentiert werden:
 
 ```{r}
 #10-4
 ```
 
-:::{.callout-tip}
+::: callout-tip
 Keyboard-Shortcut `Strg + Shift + c`
 :::
 
+## Zuweisungen
+
+-   Allen R-Objekten können Namen zugewiesen werden
+-   Namen dürfen nicht mit einer Zahl beginnen und sollten keine Sonderzeichen enthalten
+
+```{r}
+#Zuweisung
+x <- 3
+irgendeinLangerName <- 7+2
+```
+
+-   Der Aufruf erfolgt durch "Ausführen" des Namens
+
+```{r}
+#Aufruf
+x
+irgendeinLangerName
+irgendeinLangerName + x 
+```
+
+## Environment
+
+-   Sämtliche aktell definierten Variablen finden sich im RStudio-Fenster "Environment" in der rechten oberen Ecke der IDE
+-   Einmal definierte Variablen können durch erneute Zuweisung überschrieben werden
+-   Auflisten aller Environment-Elemente über `ls()`
+-   Löschen einzelner Objekte aus dem Environment über `rm(...)`
+-   Löschen aller Objekte über `rm(list=ls())`
+
+## Environment
+
+``` {.r code-line-numbers="1|2|3|4|5"}
+x <- 3
+x <- 4
+ls()
+rm(x)
+rm(list=ls())
+```
+
+# Datentypen
+
+## Vektoren
+
+-   Grundbaustein sämtlicher Datenstrukturen in R
+-   Enthalten nur gleichartige Elemente
+-   Können mit Namen versehen werden
+-   Selbst Skalare sieht R als Vektoren der Länge 1
+
+## Vektoren
+
+``` {.r code-line-numbers="1-3|4-6|7-8|9-11|12-13|14-15"}
+#unnamed vector
+x <- c(4,5,1)
+x
+#named vector
+y <- c(a=7, b=3, c=2)
+y
+#Länge bestimmen
+length(x)
+#Einzelnes Element aufrufen
+x[2]
+y["c"]
+#mehrere Elemente aufrufen
+x[c(1,3)]
+#typ bestimmen
+class(x)
+```
+
+## Vektorentypen
+
+-   **numeric**: Zahlenformat mit Unterklassen "double" (default) und "integer" (für Kompatibilität mit C und Fortran)
+-   **character**: Für Strings
+-   **logical**: Für Boolsche Werte
+
+``` {.r code-line-numbers="1-3|4-7|8-12"}
+#character
+char <- c("apple", "banana")
+class(char)
+#Einzelner Buchstabe ist auch nur character vector Länge 1
+letter <- "a"
+class(letter)
+length(letter)
+#Logical
+log1 <- c(TRUE, FALSE, TRUE)
+log2 <- c(T, T, F)
+log3 <- c(1<2, "A"=="B", 3!=5)
+class(log1)
+```
+
+## Rechnen mit Vektoren
+
+-   Mit **numeric** Vektoren kann R rechnen
+-   Mit **logical** Vektoren einfache logische Operationen ausführen
+
+``` {.r code-line-numbers="1-4|5-7"}
+# einfache Mathematik
+x + y
+x/y
+x^y
+# einfache Logik
+log1 & log2
+log1 | log2
+```
+
+## Listen
+
+-   Können beliebige, verschiedene Datentypen als Elemente enthalten
+-   Elemente können mit Namen versehen werden
+-   Subsetting kann entweder das Element selbst, oder eine Teilliste zurückgeben
+
+## Listen
+
+``` {.r code-line-numbers="1-4|5-7|8-9|10-11|12-14"}
+#unnamed list
+l1 <- list(1, "a", c(TRUE, TRUE), list(1,"x"))
+class(l1)
+length(l1)
+#named list
+l2 <- list(zahl = 1, buchstabe = "a", vektor = c(TRUE, TRUE), liste = list(1,"x"))
+names(l2)
+#gib 3. Element als Teilliste zurück
+l1[3]
+#gib 3. Element selbst zurück
+l1[[3]]
+#mit Namen indizieren
+l2["buchstabe"]
+l2[["buchstabe"]]
+```
+
+## Data.frames
+-   Basales Tabellenformat
+-   Im Kern eine Liste, die aus Vektoren identischer Länge besteht
+
+``` {.r code-line-numbers="1-5|6-7|8-9|10-12|13-15"}
+#Erzeugung
+d <- data.frame(name = c("Joe", "Ann", "Max"),
+                age = c(43, 37, 12),
+                sex = c("male", "female", "male")
+                )
+#Aufruf in Konsole
+d
+#Aufruf in Viewer
+View(d)
+```
+
+# Interaktionen mit dem Filesystem
+
+## Working directory
+- Jede R-Session ist mit einem Working directory assoziiert. 
+- Werden in Interaktionen mit dem Filesystem relative Pfade angegeben, so wird das Working directory als root interpretiert
+
+```{.r code-line-numbers="1-2|3-4|5|6-7"}
+#aktuelles Working directory abrufen
+getwd()
+#anderes working directory setzen
+setwd(dir = "data")
+getwd()
+#wieder zurück zum Ursprung
+setwd("..")
+```
+
+## Daten einlesen
+-   Einlesen sämtlicher gängiger Datenformate mit passendem Paket möglich
+-   Base R enthält Funktionen zum Einlesen von Textbasierten Formaten
+
+```{.r code-line-numbers="1-3|4-6"}
+#csv Datei einlesen
+data1 <- read.csv(file = "data/data1.csv")
+View(data1)
+#tabstopp getrennte Daten einlesen
+data2 <- read.table(file = "data/data2.txt", sep = "\t", header = TRUE)
+View(data2)
+```
+
+::: callout-tip
+`?read.table` ruft die Hilfe auf, Keyboardtaste `Tab` innerhalb eines Funktionsaufrufs lässt RStudio Vorschläge für Argumente oder Werte machen. 
+:::
+
+## Daten abspeichern
+- Zu jeder `read.xxx` Funktion gibt es in der Regel eine `write.xxx` Funktion
+- Eine Liste von Dateien in einem Verzeichnis lässt sich über `dir()` ausgeben
+```{.r code-line-numbers="1-2|3-4|5-6"}
+#data Verzeichnis listen
+dir("data")
+#Tabelle abspeichern
+write.csv(x = data1, file = "data/my_data1.csv")
+#data Verzeichnis listen
+dir("data")
+```
+
+## R-spezifische Speicherformate
+- Beliebige R Objekte können als **.RData**/**.rda** oder **.rds** gespeichert werden.
+```{.r code-line-numbers="1-2|3-4|6-7|9-11"}
+#Einzelnes Objekt speichern
+save(data1, file = "data/data1.RData")
+#gesamten working space speichern
+save.image(file = "data/alldata.RData")
+
+#working space löschen
+rm(list=ls())
+
+#Daten wieder einlesen
+load("data/data1.RData")
+load("data/alldata.RData")
+```
+
+# Arbeit mit Tabellen
+## Subsetting
+- Spalten können über Position und Namen ausgewählt werden
+- Zeilen können über Position und logische Bedinungen ausgwählt werden
+
+```{.r code-line-numbers="1-3|4-5|6-8"}
+#Spalten auswählen
+data1[, c(1,3)]
+data1[, c("age", "id")]
+#Einzelne Variable als Vektor aufrufen
+data1$weight
+#Zeilen auswählen
+data1[c(1,3), ]
+data1[age > 40, ]
+```
+
+## Faktoren
+- R's Datentyp für kategoriale Variablen
+- Im Gegensatz zu **character** für Vektoren/Variablen, die ein festes Set an Werten haben
+- Levels Können geordnet oder ungeordnet sein
+```{.r code-line-numbers="1-4|5-9|10-11"}
+#unordered
+gender <- factor(x = c("male", "female", "female"),
+              levels = c("female", "male", "diverse"))
+gender
+#ordered
+dose <- factor(x = c("high", "high", "medium", "high"),
+               levels = c("low", "medium", "high"),
+               ordered = TRUE)
+dose
+#structure
+str(dose)
+```
+
+## Datentypen umwandeln
+- Typenkonvertierung in der Regel über passende `as.xxx` Funktion
+- Variablen in bestehenden Tabellen können durch Zuweisung überschrieben werden
+
+```{.r code-line-numbers="1-2|3-4|5-7|8-9"}
+#Könnte ein Faktor sein
+data2$eyecolor
+#Aber kein numeric
+as.numeric(data2$eyecolor)
+#Im Datensatz zu Faktor machen
+as.factor(data2$eyecolor)
+data2$eyecolor <- as.factor(data2$eyecolor)
+#Jetzt sind intern numerische Levels hinterlegt
+as.numeric(data2$eyecolor)
+```
+
+## Datentypen umwandeln
+- Scheinbar numerische Variablen wie IDs *sollten* in character Vektoren umgewandelt werden um später falsches Handling zu vermeiden
+
+```{.r code-line-numbers="1-3|5-7|9-11"}
+#Mit id sollte man nicht rechnen können
+class(data2$id)
+mean(data2$id)
+
+#Umwandlung in character
+data1$id <- as.character(data1$id)
+data2$id <- as.character(data2$id)
+
+#Jetzt lässt R nicht mehr rechnen
+data1$id
+mean(data1$id)
+```
+
+## Neue Variablen erstellen
+- Über Zuweisung können einfach neue Variablen erstellt werden
+- Zu kurze Vektoren werden dabei recycelt
+
+```{.r code-line-numbers="1-3|5-6|7-8"}
+#Variable mit 0 initialisieren
+data2$blueEyes <- 0
+data2
+
+#An den richtigen Stellen 1 einsetzen
+data2[data2$eyecolor=="blue",]
+data2[data2$eyecolor=="blue",]$blueEyes <- 1
+data2
+```
+
+## Datensätze mergen
+- Extra Pakete, z.B. `data.table`/`tibble`
+- Base R Variante für einfache Standard-Varianten
+
+```{.r code-line-numbers="1-5|6-10|11-15"}
+#Inner join
+merge(x = data1, 
+      y = data2,
+      by = "id",
+      all = FALSE)
+#Full join
+merge(x = data1, 
+      y = data2,
+      by = "id",
+      all = TRUE)
+#Left join
+merge(x = data1, 
+      y = data2,
+      by = "id",
+      all.x = TRUE)
+```
+
+## Vektorrechnung in der Variablenerstellung
+- Erstellung neuer Variablen aus Berechnungen bestehender Variablen
+- Durch R's vektorisierte Rechenoperationen schnell und unkompliziert
+
+```{.r code-line-numbers="1-5|6-7|8"}
+#Vollen Datensatz erstellen
+data <- merge(x = data1, 
+              y = data2,
+              by = "id",
+              all = TRUE)
+#BMI berechnen
+data$BMI <- data$weight/(data$height/100)^2
+data
+```

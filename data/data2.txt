@@ -1,0 +1,6 @@
+"height"	"eyecolor"	"id"
+156	"brown"	2
+164	"blue"	1
+189	"brown"	4
+178	"green"	3
+169	"blue"	6

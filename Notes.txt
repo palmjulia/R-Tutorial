@@ -1,0 +1,12 @@
+# Was man noch ergänzen könnte, wenn Platz ist
+
+## Intro
+- Überblick
+- Lernziele
+
+## Datentypen
+- str()
+- recycling von vektoren
+- typen konvertieren
+- logische Operatoren
+
