@@ -3,6 +3,8 @@ title: "R-Tutorial"
 format: 
   revealjs:
     theme: dark
+    incremental: true
+    preview-links: auto
 knitr:
   opts_chunk: 
     echo: true
@@ -40,6 +42,8 @@ Wir schauen uns gemeinsam RStudio an.
 -   In seiner einfachsten Funktion kann R wie ein Taschenrechner verwendet werden
 -   Zeilen können einzeln nacheinander oder im Block ausgeführt werden
 
+. . . 
+
 ``` {.r code-line-numbers="1|2|3|1-3"}
 1+3
 4/2
@@ -54,7 +58,9 @@ Code markieren und `Strg + Enter` drücken.
 
 -   Mit `#` können Zeilen auskommentiert werden:
 
-```{r}
+. . .
+
+```{.r}
 #10-4
 ```
 
@@ -67,7 +73,9 @@ Keyboard-Shortcut `Strg + Shift + c`
 -   Allen R-Objekten können Namen zugewiesen werden
 -   Namen dürfen nicht mit einer Zahl beginnen und sollten keine Sonderzeichen enthalten
 
-```{r}
+. . . 
+
+```{.r}
 #Zuweisung
 x <- 3
 irgendeinLangerName <- 7+2
@@ -75,7 +83,7 @@ irgendeinLangerName <- 7+2
 
 -   Der Aufruf erfolgt durch "Ausführen" des Namens
 
-```{r}
+```{.r}
 #Aufruf
 x
 irgendeinLangerName
@@ -135,6 +143,8 @@ class(x)
 -   **character**: Für Strings
 -   **logical**: Für Boolsche Werte
 
+. . .
+
 ``` {.r code-line-numbers="1-3|4-7|8-12"}
 #character
 char <- c("apple", "banana")
@@ -154,6 +164,8 @@ class(log1)
 
 -   Mit **numeric** Vektoren kann R rechnen
 -   Mit **logical** Vektoren einfache logische Operationen ausführen
+
+. . .
 
 ``` {.r code-line-numbers="1-4|5-7"}
 # einfache Mathematik
@@ -194,6 +206,8 @@ l2[["buchstabe"]]
 -   Basales Tabellenformat
 -   Im Kern eine Liste, die aus Vektoren identischer Länge besteht
 
+. . .
+
 ``` {.r code-line-numbers="1-5|6-7|8-9|10-12|13-15"}
 #Erzeugung
 d <- data.frame(name = c("Joe", "Ann", "Max"),
@@ -212,6 +226,8 @@ View(d)
 - Jede R-Session ist mit einem Working directory assoziiert. 
 - Werden in Interaktionen mit dem Filesystem relative Pfade angegeben, so wird das Working directory als root interpretiert
 
+. . .
+
 ```{.r code-line-numbers="1-2|3-4|5|6-7"}
 #aktuelles Working directory abrufen
 getwd()
@@ -225,6 +241,8 @@ setwd("..")
 ## Daten einlesen
 -   Einlesen sämtlicher gängiger Datenformate mit passendem Paket möglich
 -   Base R enthält Funktionen zum Einlesen von Textbasierten Formaten
+
+. . .
 
 ```{.r code-line-numbers="1-3|4-6"}
 #csv Datei einlesen
@@ -242,6 +260,9 @@ View(data2)
 ## Daten abspeichern
 - Zu jeder `read.xxx` Funktion gibt es in der Regel eine `write.xxx` Funktion
 - Eine Liste von Dateien in einem Verzeichnis lässt sich über `dir()` ausgeben
+
+. . .
+
 ```{.r code-line-numbers="1-2|3-4|5-6"}
 #data Verzeichnis listen
 dir("data")
@@ -253,6 +274,9 @@ dir("data")
 
 ## R-spezifische Speicherformate
 - Beliebige R Objekte können als **.RData**/**.rda** oder **.rds** gespeichert werden.
+
+. . .
+
 ```{.r code-line-numbers="1-2|3-4|6-7|9-11"}
 #Einzelnes Objekt speichern
 save(data1, file = "data/data1.RData")
@@ -272,6 +296,8 @@ load("data/alldata.RData")
 - Spalten können über Position und Namen ausgewählt werden
 - Zeilen können über Position und logische Bedinungen ausgwählt werden
 
+. . .
+
 ```{.r code-line-numbers="1-3|4-5|6-8"}
 #Spalten auswählen
 data1[, c(1,3)]
@@ -287,6 +313,9 @@ data1[age > 40, ]
 - R's Datentyp für kategoriale Variablen
 - Im Gegensatz zu **character** für Vektoren/Variablen, die ein festes Set an Werten haben
 - Levels Können geordnet oder ungeordnet sein
+
+. . .
+
 ```{.r code-line-numbers="1-4|5-9|10-11"}
 #unordered
 gender <- factor(x = c("male", "female", "female"),
@@ -305,6 +334,8 @@ str(dose)
 - Typenkonvertierung in der Regel über passende `as.xxx` Funktion
 - Variablen in bestehenden Tabellen können durch Zuweisung überschrieben werden
 
+. . .
+
 ```{.r code-line-numbers="1-2|3-4|5-7|8-9"}
 #Könnte ein Faktor sein
 data2$eyecolor
@@ -319,6 +350,8 @@ as.numeric(data2$eyecolor)
 
 ## Datentypen umwandeln
 - Scheinbar numerische Variablen wie IDs *sollten* in character Vektoren umgewandelt werden um später falsches Handling zu vermeiden
+
+. . .
 
 ```{.r code-line-numbers="1-3|5-7|9-11"}
 #Mit id sollte man nicht rechnen können
@@ -338,6 +371,8 @@ mean(data1$id)
 - Über Zuweisung können einfach neue Variablen erstellt werden
 - Zu kurze Vektoren werden dabei recycelt
 
+. . .
+
 ```{.r code-line-numbers="1-3|5-6|7-8"}
 #Variable mit 0 initialisieren
 data2$blueEyes <- 0
@@ -352,6 +387,8 @@ data2
 ## Datensätze mergen
 - Extra Pakete, z.B. `data.table`/`tibble`
 - Base R Variante für einfache Standard-Varianten
+
+. . .
 
 ```{.r code-line-numbers="1-5|6-10|11-15"}
 #Inner join
@@ -375,6 +412,9 @@ merge(x = data1,
 - Erstellung neuer Variablen aus Berechnungen bestehender Variablen
 - Durch R's vektorisierte Rechenoperationen schnell und unkompliziert
 
+. . .
+
+
 ```{.r code-line-numbers="1-5|6-7|8"}
 #Vollen Datensatz erstellen
 data <- merge(x = data1, 
@@ -384,4 +424,286 @@ data <- merge(x = data1,
 #BMI berechnen
 data$BMI <- data$weight/(data$height/100)^2
 data
+```
+
+# fhircrackr
+## Intro
+- In der MII entwickeltes R-Paket zum Verarbeiten von FHIR Ressourcen
+- Stabile Version auf [CRAN](https://cran.r-project.org/web/packages/fhircrackr/index.html), Development auf [GitHub](https://github.com/POLAR-fhiR/fhircrackr)
+- Sehr ausführliche Doku in den Vignetten 
+
+. . .
+
+```{.r code-line-numbers="1-2|4-5|7-8"}
+#erste Installation (für den Kurs nicht nötig)
+#install.packages("fhircrackr")
+
+#Paket laden (1x pro R Session)
+library(fhircrackr)
+
+#Vignetten anschauen
+browseVignettes(package = "fhircrackr")
+```
+
+## Exkurs: S4 Klassen
+- Eines von R's objektorientierten Systemen
+- Definiert formale Klassen mit vorgegebener Struktur, Vererbung und passenden Methoden
+- Für jede Klasse ist (i.d.R.) eine print-Funktion definiert, die die relevanten Informationen an den User kommuniziert
+
+## Exkurs: S4 Klassen
+```{.r code-line-numbers="1-2|4-8|10-13"}
+#Hilfe aufrufen
+?fhir_url
+
+#Konstruktor aufrufen
+request <- fhir_url(url = "https://mii-agiop-3p.life.uni-leipzig.de/fhir",
+                    resource = "Patient",
+                    parameters = c(gender = "female",
+                                   birthdate = "ge1990"))
+
+#Objekt inspizieren
+request
+class(request)
+str(request)
+```
+
+## Ressourcen herunterladen per GET
+```{.r code-line-numbers="1-3|5-6|8-10"}
+#Download
+bundles <- fhir_search(request = request,
+                       max_bundles = 2)
+
+#Ergebnis
+bundles
+
+#einzelnes Bundle
+bundles[[1]]
+cat(toString(bundles[[1]]))
+```
+
+## Ressourcen herunterladen per GET
+- Funktion `fhir_search()` führt FHIR Search Request inklusive automatischem Paging aus
+- Optionale Parameter:
+  - `max_bundles` begrenzt Anzahl der Bundles im Paging
+  - `username`, `password` und `token` für Authentifizierung
+  - `delay_between_attempts` und `delay_between_bundles` steuern Wartezeit zwischen Verbindungsversuchen
+  - `save_to_disc` speichert Bundles auf Platte statt in R-Session
+  - `rm_tag` definiert html/xml-tags, die direkt nach Download gelöscht werden sollen
+  
+## Ressourcen herunterladen per POST
+- Für besonders lange Search Requests ist manchmal nur eine Suche per POST möglich
+- z.B. wenn viele lange IDs an den Suchparameter `_id` übergeben werden sollen
+
+. . .
+
+```{.r code-line-numbers="1-2|4-7|9-12"}
+request <- fhir_url(url = "https://mii-agiop-3p.life.uni-leipzig.de/fhir",
+                    resource = "Patient")
+
+#body definieren
+body <- fhir_body(content = list(gender = "female",
+                                 birthdate = "ge1990"))
+body
+
+#download
+bundles <- fhir_search(request = request,
+                       body = body,
+                       max_bundles = 2)
+```
+
+## Bundles Speichern und Laden
+- Bundles können als xml-Files oder .RData-Objekte gespeichert werden
+- Speichern als .RData erfordert vorherige Serialisierung, da sonst External Pointer kaputt gehen
+
+. . .
+
+```{.r code-line-numbers="1-2|1,4|1,6-8"}
+### Als xml
+fhir_save(bundles = bundles, directory = "PatientBundles")
+
+rm(list = ls())
+
+#laden
+bundles <- fhir_load(directory = "PatientBundles")
+bundles
+```
+
+## Bundles Speichern und laden
+```{.r code-line-numbers="1-4|1,6,7|1,9|1,11-14"}
+### Als RData
+#Serialize
+bundles_serialized <- fhir_serialize(bundles)
+bundles_serialized
+
+#speichern
+save(bundles_serialized, file = "PatientBundles/bundles.RData")
+
+rm(list=ls())
+
+#laden
+load("PatientBundles/bundles.RData")
+bundles <- fhir_unserialize(bundles_serialized)
+bundles
+```
+
+## Table Description
+- Wird in Funktion `fhir_crack()` verwendet um Bundles in Tabellen umzuwandeln
+- Definiert eine Vorschrift, wie FHIR Ressourcen in Tabellen überführt werden
+- Für die einfachste Form muss nur der Ressourcentyp angegeben werden
+- Alle anderen Eigentschaften erhalten dann Default-Werte
+- Diese Form extrahiert alle vorhandenen FHIR-Elemente in Spalten
+
+## Table Description
+```{.r code-line-numbers="1-3|5-7"}
+#Einfachste Form
+pat_desc <- fhir_table_description(resource = "Patient")
+pat_desc
+
+#cracken
+patients <- fhir_crack(bundles = bundles, design = pat_desc)
+View(patients)
+```
+
+## Spaltenbeschreibung
+- Einschränkung der zu extrahierenden Elemente über `cols` Element der Table Description
+- Definition der Elemente über XPath (1.0) Expressions
+- Spaltennamen können automatisch generiert oder frei gewählt werden
+
+## Spaltenbeschreibung
+
+```{.r code-line-numbers="1-5|6-8|10-14|15-17"}
+#selbstgewählte Spaltennamen
+pat_desc <- fhir_table_description(resource = "Patient",
+                                   cols = c(Stadt = "address/city",
+                                            Geschlecht = "gender"))
+pat_desc
+#cracken
+patients <- fhir_crack(bundles = bundles, design = pat_desc)
+View(patients)
+
+#automatische Spaltennamen
+pat_desc <- fhir_table_description(resource = "Patient",
+                                   cols = c("address/city",
+                                            "gender"))
+pat_desc
+#cracken
+patients <- fhir_crack(bundles = bundles, design = pat_desc)
+View(patients)
+```
+
+## Multiple Elemente
+- FHIR Ressourcen können für das gleiche Element (z.B. `Patient.address`) mehrere Einträge haben
+
+- Per default setzt der fhircrackr multiple Einträge in die gleiche Spalte (`format = "compact"`)
+
+- Trennzeichen (`sep`) und geklammerte Indizes (`brackets`) erlauben genaue Rekonstruktion der ursprünglichen Struktur
+
+## Multiple Elemente
+```{.r code-line-numbers="1-3|5-11|13-20"}
+#Beispielbundle verfügbar machen
+bundles <- fhir_unserialize(example_bundles1)
+cat(toString(bundles[[1]]))
+
+#ohne Indizes
+pat_desc <- fhir_table_description(resource = "Patient",
+                                   sep = " | ")
+                                   
+patients_compact <- fhir_crack(bundles = bundles, design = pat_desc)
+                       
+View(patients_compact)
+
+#Mit Indizes
+pat_desc <- fhir_table_description(resource = "Patient",
+                                   sep = " | ",
+                                   brackets = c("[", "]"))
+                                   
+patients_compact <- fhir_crack(bundles = bundles, design = pat_desc)
+                       
+View(patients_compact)
+```
+
+## Wide format
+- Alternativ zum kompakten Format können multiple Elemente auch über mehrere Spalten verteilt werden
+- Mit `format="wide"` müssen zwingend `brackets` angegeben werden.
+
+. . .
+
+
+```{.r}
+pat_desc <- fhir_table_description(resource = "Patient",
+                                   brackets = c("[", "]"),
+                                   format = "wide")
+
+patients_wide <- fhir_crack(bundles = bundles, design = pat_desc)
+
+View(patients)
+```
+
+## Melting
+- Statt über Spalten, können multiple Elemente können auch über mehrere Zeilen verteilt werden
+- Ein *melt*-Prozess wird immer nur für *ein* FHIR-Element auf einmal durchgeführt
+- Bei verschachtelten Elementen werden die Ebenen dabei stufenweise abgebaut
+
+## Melting
+
+```{.r code-line-numbers="1-2|1-3|1-4|1-5|1-6|1-7"}
+### melt name
+patients_long <- fhir_melt(patients_compact, 
+                           columns = "name.given",
+                           brackets = c("[", "]"),
+                           sep = " | ",
+                           all_columns = T)
+View(patients_long)
+```
+
+## Melting
+
+```{.r code-line-numbers="1-4|6-12|14-16"}
+### melt address
+#columns to expand
+cols <- fhir_common_columns(patients_long, column_names_prefix = "address")
+cols
+
+#melt
+patients_long <- fhir_melt(patients_long, 
+                           columns = cols,
+                           brackets = c("[", "]"),
+                           sep = " | ",
+                           all_columns = TRUE)
+View(patients_long)
+
+#remove indices
+fhir_rm_indices(patients_long, brackets = c("[", "]"))
+View(patients_long)
+```
+
+## Weitere Optionen in der Table Description
+- `rm_emtpy_cols`: Bestimmt, ob Spalten, deren Element in keiner einzigen Ressource vorkam gelöscht werden
+- `keep_attr`: Bestimmt ob xml-Attributnamen erhalten bleiben
+
+## Weitere Optionen in der Table Description
+
+```{.r code-line-numbers="1-3|5-7|9-11"}
+#Example Bundle mit verschiedenen Attributen
+bundles <- fhir_unserialize(example_bundles4)
+cat(toString(bundles[[1]]))
+
+#Table description
+medication_desc <- fhir_table_description(resource = "Medication",
+                                          keep_attr = TRUE)
+
+#crack
+meds <- fhir_crack(bundles = bundles, design = medication_desc)
+View(meds)
+```
+
+## Mehr als ein Ressourcentyp
+- FHIR Bundles können mehr als einen Ressourcentyp enthalten
+- `fhir_crack()` erzeugt grundsätzlich eine Tabelle pro Ressourcentyp
+- Es können einzelne Tabellen mit mehrfachen Aufrufen von `fhir_crack()` erzeugt weden
+- Es kann eine Liste von Tabellen mit einem einzigen Aufruf von `fhir_crack()` erzeugt werden
+
+## Mehr als ein Ressourcentyp
+
+```{.r}
 ```

@@ -6,7 +6,5 @@
 
 ## Datentypen
 - str()
-- recycling von vektoren
-- typen konvertieren
 - logische Operatoren
 
