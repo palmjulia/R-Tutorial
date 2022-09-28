@@ -81,7 +81,11 @@ x <- 3
 irgendeinLangerName <- 7+2
 ```
 
+. . .
+
 -   Der Aufruf erfolgt durch "Ausführen" des Namens
+
+. . .
 
 ```{.r}
 #Aufruf
@@ -252,6 +256,8 @@ View(data1)
 data2 <- read.table(file = "data/data2.txt", sep = "\t", header = TRUE)
 View(data2)
 ```
+
+. . .
 
 ::: callout-tip
 `?read.table` ruft die Hilfe auf, Keyboardtaste `Tab` innerhalb eines Funktionsaufrufs lässt RStudio Vorschläge für Argumente oder Werte machen. 
@@ -511,6 +517,25 @@ bundles <- fhir_search(request = request,
                        max_bundles = 2)
 ```
 
+## Umgang mit HTTP-Fehlern
+- Quellen: Authentifizierung, Tippfehler in der URL, nicht implementierte Parameter...
+- Mit Argument `log_errors = <file>` in spezifierte Datei schreiben lassen
+- Über `fhir_recent_http_error()` den zuletzt geworfenen Fehler aufrufen
+
+```{.r code-line-numbers=""}
+#Fehlende Authentifizierung
+#TODO URL ersetzen
+fhir_search("https://mii-agiop-3p.life.uni-leipzig.de/fhir/Patient")
+
+#Fehler aufrufen
+fhir_recent_http_error()
+
+#Falscher Suchparameter
+fhir_search("https://mii-agiop-3p.life.uni-leipzig.de/fhir/Observation?gender=female",
+            log_errors = "Observation_error.txt")
+```
+
+
 ## Bundles Speichern und Laden
 - Bundles können als xml-Files oder .RData-Objekte gespeichert werden
 - Speichern als .RData erfordert vorherige Serialisierung, da sonst External Pointer kaputt gehen
@@ -703,7 +728,35 @@ View(meds)
 - Es können einzelne Tabellen mit mehrfachen Aufrufen von `fhir_crack()` erzeugt weden
 - Es kann eine Liste von Tabellen mit einem einzigen Aufruf von `fhir_crack()` erzeugt werden
 
-## Mehr als ein Ressourcentyp
+## Mehr als einen Ressourcentyp herunterladen
 
-```{.r}
+```{.r code-line-numbers="1-4|6|8-9"}
+#Gemischtes Bundle herunterladen
+request <- fhir_url(url = "https://mii-agiop-3p.life.uni-leipzig.de/fhir",
+                    resource = "MedicationStatement",
+                    parameters = c("_include" = "MedicationStatement:subject"))
+
+bundles <- fhir_search(request = request, max_bundles = 5)
+
+#Bundles enthalten MedicationStatements und Patients
+cat(toString(bundles[[1]]))
+```
+
+## Mehr als einen Ressourcentyp cracken
+```{.r code-line-numbers="1-3|5-7|9-11|13-15"}
+#zwei table descriptions
+pat <- fhir_table_description(resource = "Patient")
+med <- fhir_table_description(resource = "MedicationStatement")
+
+#zwei einzelne Tabellenobjekte
+patients <- fhir_crack(bundles = bundles, design = pat)
+medications <- fhir_crack(bundles = bundles, design = med)
+
+#Eine Liste von Tabellen erzeugen
+design <- fhir_design(pat, med)
+tables <- fhir_crack(bundles = bundles, design = design)
+
+#inspizieren
+View(tables$pat)
+View(tables$med)
 ```

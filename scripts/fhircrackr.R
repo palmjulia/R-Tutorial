@@ -53,6 +53,19 @@ bundles <- fhir_search(request = request,
                        max_bundles = 2)
 
 
+#### Umgang mit HTTP-Fehlern ####
+#Fehlende Authentifizierung
+#TODO URL ersetzen
+fhir_search("https://mii-agiop-3p.life.uni-leipzig.de/fhir/Patient")
+
+#Fehler aufrufen
+fhir_recent_http_error()
+
+#Falscher Suchparameter
+fhir_search("https://mii-agiop-3p.life.uni-leipzig.de/fhir/Observation?gender=female",
+            log_errors = "Observation_error.txt")
+
+
 #### Bundles speichern und Laden ####
 #als xml
 fhir_save(bundles = bundles, directory = "PatientBundles")
@@ -184,6 +197,29 @@ meds <- fhir_crack(bundles = bundles, design = medication_desc)
 View(meds)
 
 
-#### Mehr als ein Ressourcentyp ####
+#### Mehr als einen Ressourcentyp herunterladen ####
+#Gemischtes Bundle herunterladen
+request <- fhir_url(url = "https://mii-agiop-3p.life.uni-leipzig.de/fhir",
+                    resource = "MedicationStatement",
+                    parameters = c("_include" = "MedicationStatement:subject"))
 
+bundles <- fhir_search(request = request, max_bundles = 5)
 
+#Bundles enthalten MedicationStatements und Patients
+cat(toString(bundles[[1]]))
+
+#zwei table descriptions
+pat <- fhir_table_description(resource = "Patient")
+med <- fhir_table_description(resource = "MedicationStatement")
+
+#zwei einzelne Tabellenobjekte
+patients <- fhir_crack(bundles = bundles, design = pat)
+medications <- fhir_crack(bundles = bundles, design = med)
+
+#Eine Liste von Tabellen erzeugen
+design <- fhir_design(pat, med)
+tables <- fhir_crack(bundles = bundles, design = design)
+
+#inspizieren
+View(tables$pat)
+View(tables$med)
