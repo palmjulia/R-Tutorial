@@ -10,6 +10,11 @@ data1$weight
 data1[c(1,3), ]
 data1[data1$age > 40, ]
 
+
+
+
+
+
 #### Faktoren ####
 #unordered
 gender <- factor(x = c("male", "female", "female"),
@@ -24,6 +29,11 @@ dose
 
 #structure
 str(dose)
+
+
+
+
+
 
 #### Datentypen umwandeln ####
 
@@ -41,6 +51,9 @@ data2$eyecolor <- as.factor(data2$eyecolor)
 as.numeric(data2$eyecolor)
 
 
+
+
+
 #Mit id sollte man nicht rechnen können
 class(data2$id)
 mean(data2$id)
@@ -52,6 +65,8 @@ data2$id <- as.character(data2$id)
 #Jetzt lässt R nicht mehr rechnen
 data1$id
 mean(data1$id)
+
+
 
 
 #### Neue Variablen erstellen ####
@@ -82,6 +97,8 @@ merge(x = data1,
       y = data2,
       by = "id",
       all.x = TRUE)
+
+
 
 
 #### Vektorrechnung in der Variablenerstellung ####

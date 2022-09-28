@@ -12,7 +12,7 @@ knitr:
 
 <!-- https://quarto.org/docs/reference/formats/presentations/revealjs.html -->
 
-# Intro
+# 1 Intro
 
 ## Was ist R?
 
@@ -112,7 +112,7 @@ rm(x)
 rm(list=ls())
 ```
 
-# Datentypen
+# 2 Datentypen
 
 ## Vektoren
 
@@ -123,20 +123,25 @@ rm(list=ls())
 
 ## Vektoren
 
-``` {.r code-line-numbers="1-3|4-6|7-8|9-11|12-13|14-15"}
+``` {.r code-line-numbers="1-3|5-7|9-10|12-14|16-17|19-20"}
 #unnamed vector
 x <- c(4,5,1)
 x
+
 #named vector
 y <- c(a=7, b=3, c=2)
 y
+
 #Länge bestimmen
 length(x)
+
 #Einzelnes Element aufrufen
 x[2]
 y["c"]
+
 #mehrere Elemente aufrufen
 x[c(1,3)]
+
 #typ bestimmen
 class(x)
 ```
@@ -189,18 +194,22 @@ log1 | log2
 
 ## Listen
 
-``` {.r code-line-numbers="1-4|5-7|8-9|10-11|12-14"}
+``` {.r code-line-numbers="1-4|6-8|10-11|13-14|16-18"}
 #unnamed list
 l1 <- list(1, "a", c(TRUE, TRUE), list(1,"x"))
 class(l1)
 length(l1)
+
 #named list
 l2 <- list(zahl = 1, buchstabe = "a", vektor = c(TRUE, TRUE), liste = list(1,"x"))
 names(l2)
+
 #gib 3. Element als Teilliste zurück
 l1[3]
+
 #gib 3. Element selbst zurück
 l1[[3]]
+
 #mit Namen indizieren
 l2["buchstabe"]
 l2[["buchstabe"]]
@@ -212,7 +221,7 @@ l2[["buchstabe"]]
 
 . . .
 
-``` {.r code-line-numbers="1-5|6-7|8-9|10-12|13-15"}
+``` {.r code-line-numbers="1-5|6-7|8-9|10-12|14-16"}
 #Erzeugung
 d <- data.frame(name = c("Joe", "Ann", "Max"),
                 age = c(43, 37, 12),
@@ -220,24 +229,27 @@ d <- data.frame(name = c("Joe", "Ann", "Max"),
                 )
 #Aufruf in Konsole
 d
+
 #Aufruf in Viewer
 View(d)
 ```
 
-# Interaktionen mit dem Filesystem
+# 3 Interaktionen mit dem Filesystem
 
 ## Working directory
 - Jede R-Session ist mit einem Working directory assoziiert. 
-- Werden in Interaktionen mit dem Filesystem relative Pfade angegeben, so wird das Working directory als root interpretiert
+- Werden in Interaktionen mit dem Filesystem relative Pfade angegeben, so wird dieses Working directory als root interpretiert
 
 . . .
 
-```{.r code-line-numbers="1-2|3-4|5|6-7"}
+```{.r code-line-numbers="1-2|4-5|6|8-9"}
 #aktuelles Working directory abrufen
 getwd()
+
 #anderes working directory setzen
 setwd(dir = "data")
 getwd()
+
 #wieder zurück zum Ursprung
 setwd("..")
 ```
@@ -269,11 +281,13 @@ View(data2)
 
 . . .
 
-```{.r code-line-numbers="1-2|3-4|5-6"}
+```{.r code-line-numbers="1-2|4-5|7-8"}
 #data Verzeichnis listen
 dir("data")
+
 #Tabelle abspeichern
 write.csv(x = data1, file = "data/my_data1.csv")
+
 #data Verzeichnis listen
 dir("data")
 ```
@@ -297,19 +311,21 @@ load("data/data1.RData")
 load("data/alldata.RData")
 ```
 
-# Arbeit mit Tabellen
+# 4 Arbeit mit Tabellen
 ## Subsetting
 - Spalten können über Position und Namen ausgewählt werden
 - Zeilen können über Position und logische Bedinungen ausgwählt werden
 
 . . .
 
-```{.r code-line-numbers="1-3|4-5|6-8"}
+```{.r code-line-numbers="1-3|5-6|8-19"}
 #Spalten auswählen
 data1[, c(1,3)]
 data1[, c("age", "id")]
+
 #Einzelne Variable als Vektor aufrufen
 data1$weight
+
 #Zeilen auswählen
 data1[c(1,3), ]
 data1[age > 40, ]
@@ -342,11 +358,12 @@ str(dose)
 
 . . .
 
-```{.r code-line-numbers="1-2|3-4|5-7|8-9"}
+```{.r code-line-numbers="1-2|3-4|6-8|9-10"}
 #Könnte ein Faktor sein
 data2$eyecolor
 #Aber kein numeric
 as.numeric(data2$eyecolor)
+
 #Im Datensatz zu Faktor machen
 as.factor(data2$eyecolor)
 data2$eyecolor <- as.factor(data2$eyecolor)
@@ -432,7 +449,7 @@ data$BMI <- data$weight/(data$height/100)^2
 data
 ```
 
-# fhircrackr
+# 5 fhircrackr: Download von Daten
 ## Intro
 - In der MII entwickeltes R-Paket zum Verarbeiten von FHIR Ressourcen
 - Stabile Version auf [CRAN](https://cran.r-project.org/web/packages/fhircrackr/index.html), Development auf [GitHub](https://github.com/POLAR-fhiR/fhircrackr)
@@ -458,7 +475,7 @@ browseVignettes(package = "fhircrackr")
 
 ## Exkurs: S4 Klassen
 ```{.r code-line-numbers="1-2|4-8|10-13"}
-#Hilfe aufrufen
+#Beispiel fhir_url
 ?fhir_url
 
 #Konstruktor aufrufen
@@ -522,13 +539,15 @@ bundles <- fhir_search(request = request,
 - Mit Argument `log_errors = <file>` in spezifierte Datei schreiben lassen
 - Über `fhir_recent_http_error()` den zuletzt geworfenen Fehler aufrufen
 
+. . .
+
+
 ```{.r code-line-numbers=""}
 #Fehlende Authentifizierung
-#TODO URL ersetzen
-fhir_search("https://mii-agiop-3p.life.uni-leipzig.de/fhir/Patient")
+fhir_search("https://mii-agiop-polar.life.uni-leipzig.de/fhir/Patient")
 
 #Fehler aufrufen
-fhir_recent_http_error()
+cat(fhir_recent_http_error())
 
 #Falscher Suchparameter
 fhir_search("https://mii-agiop-3p.life.uni-leipzig.de/fhir/Observation?gender=female",
@@ -537,9 +556,7 @@ fhir_search("https://mii-agiop-3p.life.uni-leipzig.de/fhir/Observation?gender=fe
 
 
 ## Bundles Speichern und Laden
-- Bundles können als xml-Files oder .RData-Objekte gespeichert werden
-- Speichern als .RData erfordert vorherige Serialisierung, da sonst External Pointer kaputt gehen
-
+- Bundles können als xml-Files  gespeichert werden
 . . .
 
 ```{.r code-line-numbers="1-2|1,4|1,6-8"}
@@ -554,6 +571,11 @@ bundles
 ```
 
 ## Bundles Speichern und laden
+- Bundles können auch als .RData-Objekte gespeichert werden
+- Speichern als .RData erfordert vorherige Serialisierung, da sonst External Pointer kaputt gehen
+
+. . .
+
 ```{.r code-line-numbers="1-4|1,6,7|1,9|1,11-14"}
 ### Als RData
 #Serialize
@@ -571,14 +593,20 @@ bundles <- fhir_unserialize(bundles_serialized)
 bundles
 ```
 
+
+# 6 fhircrackr: Verflachen von Daten
+
 ## Table Description
 - Wird in Funktion `fhir_crack()` verwendet um Bundles in Tabellen umzuwandeln
 - Definiert eine Vorschrift, wie FHIR Ressourcen in Tabellen überführt werden
-- Für die einfachste Form muss nur der Ressourcentyp angegeben werden
-- Alle anderen Eigentschaften erhalten dann Default-Werte
-- Diese Form extrahiert alle vorhandenen FHIR-Elemente in Spalten
 
 ## Table Description
+- Für die einfachste Form muss nur der Ressourcentyp angegeben werden
+- Alle anderen Eigenschaften erhalten dann Default-Werte
+- Diese Form extrahiert alle vorhandenen FHIR-Elemente in Spalten
+
+. . .
+
 ```{.r code-line-numbers="1-3|5-7"}
 #Einfachste Form
 pat_desc <- fhir_table_description(resource = "Patient")
@@ -629,7 +657,7 @@ View(patients)
 bundles <- fhir_unserialize(example_bundles1)
 cat(toString(bundles[[1]]))
 
-#ohne Indizes
+#cracken ohne Indizes
 pat_desc <- fhir_table_description(resource = "Patient",
                                    sep = " | ")
                                    
@@ -637,7 +665,7 @@ patients_compact <- fhir_crack(bundles = bundles, design = pat_desc)
                        
 View(patients_compact)
 
-#Mit Indizes
+#cracken mit Indizes
 pat_desc <- fhir_table_description(resource = "Patient",
                                    sep = " | ",
                                    brackets = c("[", "]"))
@@ -703,7 +731,7 @@ View(patients_long)
 ```
 
 ## Weitere Optionen in der Table Description
-- `rm_emtpy_cols`: Bestimmt, ob Spalten, deren Element in keiner einzigen Ressource vorkam gelöscht werden
+- `rm_emtpy_cols`: Bestimmt ob Spalten, deren Element in keiner einzigen Ressource vorkam, gelöscht werden
 - `keep_attr`: Bestimmt ob xml-Attributnamen erhalten bleiben
 
 ## Weitere Optionen in der Table Description
@@ -752,7 +780,7 @@ med <- fhir_table_description(resource = "MedicationStatement")
 patients <- fhir_crack(bundles = bundles, design = pat)
 medications <- fhir_crack(bundles = bundles, design = med)
 
-#Eine Liste von Tabellen erzeugen
+#Stattdessen eine Liste von Tabellen erzeugen
 design <- fhir_design(pat, med)
 tables <- fhir_crack(bundles = bundles, design = design)
 

@@ -31,6 +31,7 @@ write.csv(x = data1, file = "data/my_data1.csv")
 
 #data Verzeichnis listen
 dir("data")
+
     
 
 #### R-spezifische Speicherformate ####

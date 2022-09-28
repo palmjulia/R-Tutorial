@@ -21,6 +21,9 @@ x[c(1,3)]
 #typ bestimmen
 class(x)
 
+
+
+
 #### Vektorentypen ####
 
 #character
@@ -38,6 +41,10 @@ log2 <- c(T, T, F)
 log3 <- c(1<2, "A"=="B", 3!=5)
 class(log1)
 
+
+
+
+
 #### Rechnen mit Vektoren ####
 # einfache Mathematik
 x + y
@@ -47,6 +54,9 @@ x^y
 # einfache Logik
 log1 & log2
 log1 | log2
+
+
+
 
 #### Listen ####
 
@@ -70,6 +80,10 @@ l1[[3]]
 #mit Namen indizieren
 l2["buchstabe"]
 l2[["buchstabe"]]
+
+
+
+
 
 #### Data.frames ####
 
