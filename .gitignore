@@ -1,7 +1,46 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
-.quarto/*
-*.html
-/.quarto/
+## Ignore everything:
+/*
+/*/
+
+## ... but don't ignore these files:
+!/.gitignore
+!/NEWS.md
+!/README.md
+!/_quarto.yml
+!/Notes.txt
+!/R-Tutorial.Rproj
+!/Tutorial.qmd
+
+
+## and also NOT ignore these folders (but ignore all of its content and only whitelist some files:):
+!/.config/
+/config/*
+!/config/rstudio-prefs.json
+
+!/data/
+/data/*
+!/data/*.csv
+!/data/*.RData
+!/data/*.txt
+
+!/docker/
+/docker/*
+!/docker/docker-compose.y[a]ml
+!/docker/Dockerfile
+!/docker/README.md
+
+!/exercises
+/exercises/*
+!/exercises/*.R
+
+!/images
+/images/*
+!/images/*.png
+
+!/scripts
+/scripts/*
+!/scripts/*.R
+
+!/Tutorial_files
+# /Tutorial_files/*
+# !/Tutorial_files/*.R
