@@ -44,5 +44,3 @@
 !/Tutorial_files
 # /Tutorial_files/*
 # !/Tutorial_files/*.R
-
-/.quarto/
