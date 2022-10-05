@@ -13,6 +13,19 @@ data1[data1$age > 40, ]
 
 
 
+#### Spaltennamen ändern ####
+#alle Spaltennamen
+colnames(data2)
+
+#einzelner Spaltenname
+colnames(data2)[3]
+
+#neuen Wert zuweisen
+colnames(data2)[3] <- "id"
+colnames(data2)
+
+
+
 
 
 #### Faktoren ####

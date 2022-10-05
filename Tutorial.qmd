@@ -331,6 +331,24 @@ data1[c(1,3), ]
 data1[age > 40, ]
 ```
 
+## Spaltennamen ändern 
+- Spaltennamen können über `colnames()` angezeigt und verändert werden
+
+. . .
+
+```{.r code-line-numbers="1-2|4-5|7-9"}
+#alle Spaltennamen anzeigen
+colnames(data2)
+
+#einzelner Spaltenname
+colnames(data2)[3]
+
+#neuen Wert zuweisen
+colnames(data2)[3] <- "id"
+colnames(data2)
+```
+
+
 ## Faktoren
 - R's Datentyp für kategoriale Variablen
 - Im Gegensatz zu **character** für Vektoren/Variablen, die ein festes Set an Werten haben
@@ -788,3 +806,17 @@ tables <- fhir_crack(bundles = bundles, design = design)
 View(tables$pat)
 View(tables$med)
 ```
+
+# 7 Beispielanalyse
+
+## Praktische Übung
+- Das gelernte soll nun in einer einfachen Beispielanalyse angewendet werden
+- Fragestellung: "Wie hängen BMI und Bluthochdruck, als Nebendiagnose vergeben, zusammen?"
+- Beantwortung anhand der fiktiven Beispieldaten auf https://mii-agiop-3p.life.uni-leipzig.de/fhir
+- Das Skript "7 Beispielanalyse.R" führt stückweise durch die notwendigen Schritte
+
+## Schritt 1: BMI der Patienten berechnen
+a) Observations für Körpergewicht und Körpergröße herunterladen 
+b) Observation Ressourcen verflachen
+c) Daten vorbereiten
+d) BMI berechnen

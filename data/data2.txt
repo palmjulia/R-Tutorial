@@ -1,4 +1,4 @@
-"height"	"eyecolor"	"id"
+"height"	"eyecolor"	"identifier"
 156	"brown"	2
 164	"blue"	1
 189	"brown"	4
