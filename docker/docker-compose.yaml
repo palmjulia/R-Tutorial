@@ -1,0 +1,13 @@
+version: "3.9" # optional since v1.27.0
+services:
+  rstudio:
+    # image: joundso/rstudio:4.2.1
+    build: .
+    restart: unless-stopped
+    environment:
+      - PASSWORD=pwd
+    ports:
+      - "8788:8787" #rstudio
+    volumes:
+      - ..:/home/rstudio
+    hostname: docker-rstudio
