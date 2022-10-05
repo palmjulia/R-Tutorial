@@ -11,8 +11,12 @@ FROM rocker/rstudio:4.2.1
 ## - quarto
 
 ## Install some packages we need during this tutorial:
-RUN install2.r --error --skipinstalled -n $NCPUS \
+RUN install2.r --error \
     fhircrackr \
+    htmltools \
+    jsonlite \
+    knitr \
+    rmarkdown \
     && rm -rf /tmp/downloaded_packages \
     && rm -rf /var/lib/apt/lists/*
 
