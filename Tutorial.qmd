@@ -1,5 +1,6 @@
 ---
-title: "R-Tutorial"
+title: "Tutorial R & fhircrackr"
+date: "9. November 2022"
 format: 
   revealjs:
     theme: dark
@@ -32,6 +33,7 @@ knitr:
 ## Tutorial Setup
 
 Hier erklären wie die Leute zum Docker-Container mit vorbereiteten Skripten kommen
+
 
 ## RStudio
 
@@ -813,10 +815,52 @@ View(tables$med)
 - Das gelernte soll nun in einer einfachen Beispielanalyse angewendet werden
 - Fragestellung: "Wie hängen BMI und Bluthochdruck, als Nebendiagnose vergeben, zusammen?"
 - Beantwortung anhand der fiktiven Beispieldaten auf https://mii-agiop-3p.life.uni-leipzig.de/fhir
-- Das Skript "7 Beispielanalyse.R" führt stückweise durch die notwendigen Schritte
+
+## Praktische Übung
+Das Skript *7 Beispielanalyse.R* führt stückweise durch die notwendigen Schritte.
+
+. . .
+
+Für jeden Teilschritt:
+
+1) Selbstständiges Bearbeiten der Teilaufgabe
+2) Gemeinsames besprechen der Lösung
+
 
 ## Schritt 1: BMI der Patienten berechnen
 a) Observations für Körpergewicht und Körpergröße herunterladen 
 b) Observation Ressourcen verflachen
 c) Daten vorbereiten
 d) BMI berechnen
+
+## Schritt 2: Herausfinden, wer Bluthochdruck als Komorbiditätsdiagnose hat
+a) Encounter- und Condition-Ressourcen über POST herunterladen
+b) Encounter Ressourcen verflachen
+c) Condition Ressourcen verflachen
+
+## Schritt 3: Zusammenhang von BMI und Bluthochdruck darstellen
+
+:::: {.columns}
+
+::: {.column width="60%"}
+![](images/bmi_and_hypertension.png)
+:::
+
+::: {.column width="40%"}
+Ein Wilcoxon-Mann-Whitney-U-Test ergab keinen signifikanten Unterschied im BMI der Patienten mit vs. ohne Bluthochdruck als Komorbiditätsdiagnose [*W(16,21) = 146,6;* 
+
+*p = 0.5196*]
+:::
+
+::::
+
+# 8 Abschluss
+
+## Materialien
+- Sämtlicher Code, inklusive Präsentation ist verfügbar unter [https://github.com/palmjulia/R-Tutorial](https://github.com/palmjulia/R-Tutorial) 
+- Bug reports / feature requests für den *fhircrackr* gerne unter [https://github.com/POLAR-fhiR/fhircrackr/issues](https://github.com/POLAR-fhiR/fhircrackr/issues) 
+- Sonstiger Kontakt unter [julia.palm@med.uni-jena.de](mailto:julia.palm@med.uni.jena.de)
+
+## Danke
+
+... für die Aufmerksamkeit!
