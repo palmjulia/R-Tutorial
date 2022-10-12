@@ -10,6 +10,7 @@
 !/Notes.txt
 !/R-Tutorial.Rproj
 !/Tutorial.qmd
+!/Tutorial.html
 
 
 ## and also NOT ignore these folders (but ignore all of its content and only whitelist some files:):
@@ -28,10 +29,6 @@
 !/docker/docker-compose.y[a]ml
 !/docker/Dockerfile
 !/docker/README.md
-
-!/exercises
-/exercises/*
-!/exercises/*.R
 
 !/images
 /images/*
