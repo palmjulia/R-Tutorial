@@ -424,7 +424,37 @@
 </section>
 <section id="tutorial-setup" class="slide level2">
 <h2>Tutorial Setup</h2>
-<p>Hier erklären wie die Leute zum Docker-Container mit vorbereiteten Skripten kommen</p>
+<p>Vorbedingungen:</p>
+<ul>
+<li class="fragment">Git Repository geclont: <code>git clone https://github.com/palmjulia/R-Tutorial.git</code></li>
+<li class="fragment">Verzeichniswechsel ins lokale Repository <code>cd R-Tutorial/docker</code></li>
+<li class="fragment">Docker Image gebaut mit <code>docker-compose build</code> oder gepullt mit <code>docker pull palmjulia/r-tutorial</code></li>
+</ul>
+<div class="fragment">
+<div class="callout callout-warning callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>Sollte schon passiert sein!</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="tutorial-setup-1" class="slide level2">
+<h2>Tutorial Setup</h2>
+<p>Für heute:</p>
+<ul>
+<li class="fragment">Verzeichniswechsel ins lokale Repository <code>cd R-Tutorial/docker</code></li>
+<li class="fragment">RSudio-Server starten mit <code>docker-compose up -d</code></li>
+<li class="fragment">RStudio im Browser öffnen unter <a href="http://127.0.0.1:8787">127.0.0.1:8787</a></li>
+<li class="fragment">Username: <code>rstudio</code>, Passwort: <code>pwd</code></li>
+</ul>
 </section>
 <section id="rstudio" class="slide level2">
 <h2>RStudio</h2>
@@ -1140,7 +1170,7 @@
 <span id="cb33-4"><a href="#cb33-4"></a></span>
 <span id="cb33-5"><a href="#cb33-5"></a>patients_wide <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> pat_desc)</span>
 <span id="cb33-6"><a href="#cb33-6"></a></span>
-<span id="cb33-7"><a href="#cb33-7"></a><span class="fu">View</span>(patients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb33-7"><a href="#cb33-7"></a><span class="fu">View</span>(patients_wide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="melting" class="slide level2">
@@ -1177,7 +1207,7 @@
 <span id="cb35-12"><a href="#cb35-12"></a><span class="fu">View</span>(patients_long)</span>
 <span id="cb35-13"><a href="#cb35-13"></a></span>
 <span id="cb35-14"><a href="#cb35-14"></a><span class="co">#remove indices</span></span>
-<span id="cb35-15"><a href="#cb35-15"></a><span class="fu">fhir_rm_indices</span>(patients_long, <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">"["</span>, <span class="st">"]"</span>))</span>
+<span id="cb35-15"><a href="#cb35-15"></a>patients_long <span class="ot">&lt;-</span> <span class="fu">fhir_rm_indices</span>(patients_long, <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">"["</span>, <span class="st">"]"</span>))</span>
 <span id="cb35-16"><a href="#cb35-16"></a><span class="fu">View</span>(patients_long)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="weitere-optionen-in-der-table-description" class="slide level2">

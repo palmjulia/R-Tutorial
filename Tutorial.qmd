@@ -31,8 +31,25 @@ knitr:
 - Pubklikation auf CRAN erfordert einen Mindeststandard an technischer Qualität (keine inhaltliche Richtigkeit!) und ist einem Review-Prozess unterworfen.
 
 ## Tutorial Setup
+Vorbedingungen: 
 
-Hier erklären wie die Leute zum Docker-Container mit vorbereiteten Skripten kommen
+- Git Repository geclont: `git clone https://github.com/palmjulia/R-Tutorial.git`
+- Verzeichniswechsel ins lokale Repository `cd R-Tutorial/docker`
+- Docker Image gebaut mit `docker-compose build` oder gepullt mit `docker pull palmjulia/r-tutorial`
+
+. . .
+
+::: {.callout-warning}
+Sollte schon passiert sein!
+:::
+
+## Tutorial Setup
+Für heute:
+
+- Verzeichniswechsel ins lokale Repository `cd R-Tutorial/docker`
+- RSudio-Server starten mit `docker-compose up -d`
+- RStudio im Browser öffnen unter [127.0.0.1:8787](http://127.0.0.1:8787)
+- Username: `rstudio`, Passwort: `pwd` 
 
 
 ## RStudio

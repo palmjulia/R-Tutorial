@@ -10,6 +10,10 @@ FROM rocker/rstudio:4.2.1
 ## - pandoc
 ## - quarto
 
+## Install some system libraries we need
+RUN apt-get update -qq
+RUN apt-get install -yqq libxml2-dev libssl-dev curl
+
 ## Install some packages we need during this tutorial:
 RUN install2.r --error \
     fhircrackr \
@@ -17,6 +21,7 @@ RUN install2.r --error \
     jsonlite \
     knitr \
     rmarkdown \
+    ggplot2 \
     && rm -rf /tmp/downloaded_packages \
     && rm -rf /var/lib/apt/lists/*
 
