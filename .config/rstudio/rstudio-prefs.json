@@ -5,8 +5,6 @@
     "rainbow_parentheses": true,
     "auto_append_newline": true,
     "strip_trailing_whitespace": true,
-    "check_arguments_to_r_function_calls": true,
-    "warn_if_no_such_variable_in_scope": true,
     "warn_variable_defined_but_not_used": true,
     "posix_terminal_shell": "bash",
     "jobs_tab_visibility": "shown",

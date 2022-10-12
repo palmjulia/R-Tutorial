@@ -11,6 +11,7 @@
 !/R-Tutorial.Rproj
 !/Tutorial.qmd
 !/Tutorial.html
+!/.RProfile
 
 
 ## and also NOT ignore these folders (but ignore all of its content and only whitelist some files:):
@@ -20,9 +21,8 @@
 
 !/data/
 /data/*
-!/data/*.csv
-!/data/*.RData
-!/data/*.txt
+!/data/data1.csv
+!/data/data2.txt
 
 !/docker/
 /docker/*
