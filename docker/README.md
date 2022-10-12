@@ -6,7 +6,16 @@
 cd docker
 
 docker-compose pull
+```
+
+### Advanced
+
+```bash
+## In der docker-compose das image auskommentieren und das build-Kommando einkommentieren, dann:
 # docker-compose build
+
+## ... oder händisch selber bauen:
+# docker build -t joundso/rstudio:latest .
 ```
 
 ## Ausführen des RStudio Containers
