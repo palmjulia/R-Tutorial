@@ -63,7 +63,7 @@ pat_desc <- fhir_table_description(resource = "Patient",
 
 patients_wide <- fhir_crack(bundles = bundles, design = pat_desc)
 
-View(patients)
+View(patients_wide)
 
 
 
@@ -91,7 +91,7 @@ patients_long <- fhir_melt(patients_long,
 View(patients_long)
 
 #remove indices
-fhir_rm_indices(patients_long, brackets = c("[", "]"))
+patients_long <- fhir_rm_indices(patients_long, brackets = c("[", "]"))
 View(patients_long)
 
 
@@ -137,3 +137,4 @@ tables <- fhir_crack(bundles = bundles, design = design)
 #inspizieren
 View(tables$pat)
 View(tables$med)
+
