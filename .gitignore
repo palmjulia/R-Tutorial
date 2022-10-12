@@ -29,6 +29,7 @@
 !/docker/docker-compose.y[a]ml
 !/docker/Dockerfile
 !/docker/README.md
+!/docker/build_image.sh
 
 !/images
 /images/*

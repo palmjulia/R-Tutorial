@@ -5,7 +5,8 @@
 ```bash
 cd docker
 
-docker-compose build
+docker-compose pull
+# docker-compose build
 ```
 
 ## Ausführen des RStudio Containers
