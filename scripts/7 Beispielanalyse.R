@@ -1,7 +1,8 @@
-###############################################
-### Vorbereitung: Lade das fhircrackr Paket ###
-###############################################
+####################################################################
+### Vorbereitung: Environment bereinigen, fhircrackr Paket laden ###
+####################################################################
 
+rm(list=ls())
 library(fhircrackr)
 
 ##############################################
@@ -20,7 +21,8 @@ library(fhircrackr)
 # Lade alle Bundles herunter
 
 
-
+#backup falls Internetverbindung nicht geht: 
+#bundles <- fhir_unserialize(readRDS("backup/backup7a.rds"))
 
 
 
@@ -123,7 +125,8 @@ pat_ids <- paste(bmi_data$patient, collapse = ",")
 # Übergib body und request an fhir_search() und lade die Bundles herunter
 
 
-
+#backup falls Internetverbindung nicht geht: 
+#encounter_bundles <- fhir_unserialize(readRDS("backup/backup7b.rds"))
 
 #### 2.b Encounter Ressourcen verflachen ####
 

@@ -119,6 +119,9 @@ request <- fhir_url(url = "https://mii-agiop-3p.life.uni-leipzig.de/fhir",
 
 bundles <- fhir_search(request = request, max_bundles = 5)
 
+#backup falls Internetverbindung nicht geht: 
+#bundles <- fhir_unserialize(readRDS("backup/backup6a.rds"))
+
 #Bundles enthalten MedicationStatements und Patients
 cat(toString(bundles[[1]]))
 

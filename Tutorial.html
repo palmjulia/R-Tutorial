@@ -399,6 +399,56 @@
 <!-- https://quarto.org/docs/reference/formats/presentations/revealjs.html -->
 </section>
 <section>
+<section id="vorwort" class="title-slide slide level1 center">
+<h1>0 Vorwort</h1>
+
+</section>
+<section id="programm" class="slide level2">
+<h2>Programm</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div>
+<ol type="1">
+<li>Intro</li>
+<li>Datentypen</li>
+<li>Interaktionen mit dem Filesystem</li>
+<li>Arbeit mit Tabellen</li>
+</ol>
+</div>
+</div><div class="column" style="width:50%;">
+<div>
+<ol start="5" type="1">
+<li>fhircrackr: Download von Daten</li>
+<li>fhircrackr: Verflachen von Daten</li>
+<li>Beispielanalyse</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Mittagspause 12-13 Uhr</p>
+<p>Kleinere Pausen nach Bedarf</p>
+</div>
+</div>
+</div>
+</section>
+<section id="r-philosophie-vorbemerkung-für-kenner" class="slide level2">
+<h2>R Philosophie: Vorbemerkung für Kenner</h2>
+<ul>
+<li class="fragment">Für diesen Kurs verwenden wir ausschließlich base R Funktionen (abgesehen von <code>fhircrackr</code>)</li>
+<li class="fragment">Viele der vorgestellten Prinzipien sind schneller, eleganter und effizienter in verschiedenen Paketen implementiert</li>
+<li class="fragment">Wir wollen uns hier aber nicht in Grabenkämpfe zwischen rivalisierenden Paradigmen verwickeln ;-)</li>
+</ul>
+</section></section>
+<section>
 <section id="intro" class="title-slide slide level1 center">
 <h1>1 Intro</h1>
 
@@ -419,7 +469,7 @@
 <li class="fragment">Zusätzliche Funktionen können als R-Pakete innerhalb der Session nachinstalliert werden.</li>
 <li class="fragment">Jeder kann R-Pakete schreiben und zur Verfügung stellen.</li>
 <li class="fragment">Zentrale Sammelstelle für R-Pakete ist das *Comprehensive R Archive Network” (<a href="https://cran.r-project.org/">CRAN</a>)</li>
-<li class="fragment">Pubklikation auf CRAN erfordert einen Mindeststandard an technischer Qualität (keine inhaltliche Richtigkeit!) und ist einem Review-Prozess unterworfen.</li>
+<li class="fragment">Publikation auf CRAN erfordert einen Mindeststandard an technischer Qualität (keine inhaltliche Richtigkeit!) und ist einem Review-Prozess unterworfen.</li>
 </ul>
 </section>
 <section id="tutorial-setup" class="slide level2">
@@ -428,7 +478,7 @@
 <ul>
 <li class="fragment">Git Repository geclont: <code>git clone https://github.com/palmjulia/R-Tutorial.git</code></li>
 <li class="fragment">Verzeichniswechsel ins lokale Repository <code>cd R-Tutorial/docker</code></li>
-<li class="fragment">Docker Image gebaut mit <code>docker-compose build</code> oder gepullt mit <code>docker pull palmjulia/r-tutorial</code></li>
+<li class="fragment">Docker Image gepullt mit <code>docker-compose pull</code></li>
 </ul>
 <div class="fragment">
 <div class="callout callout-warning callout-captioned callout-style-default">
@@ -450,6 +500,7 @@
 <h2>Tutorial Setup</h2>
 <p>Für heute:</p>
 <ul>
+<li class="fragment">Diese Folien liegen im geclonten Repository unter <em>Tutorial.html</em></li>
 <li class="fragment">Verzeichniswechsel ins lokale Repository <code>cd R-Tutorial/docker</code></li>
 <li class="fragment">RSudio-Server starten mit <code>docker-compose up -d</code></li>
 <li class="fragment">RStudio im Browser öffnen unter <a href="http://127.0.0.1:8787">127.0.0.1:8787</a></li>
@@ -676,6 +727,12 @@
 <h1>3 Interaktionen mit dem Filesystem</h1>
 
 </section>
+<section id="vorbereitung" class="slide level2">
+<h2>Vorbereitung</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="do">#### Vorbereitung #####</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="co">#Environment bereinigen</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 <section id="working-directory" class="slide level2">
 <h2>Working directory</h2>
 <ul>
@@ -683,15 +740,15 @@
 <li class="fragment">Werden in Interaktionen mit dem Filesystem relative Pfade angegeben, so wird dieses Working directory als root interpretiert</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb11" data-code-line-numbers="1-2|4-5|6|8-9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">#aktuelles Working directory abrufen</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">getwd</span>()</span>
-<span id="cb11-3"><a href="#cb11-3"></a></span>
-<span id="cb11-4"><a href="#cb11-4"></a><span class="co">#anderes working directory setzen</span></span>
-<span id="cb11-5"><a href="#cb11-5"></a><span class="fu">setwd</span>(<span class="at">dir =</span> <span class="st">"data"</span>)</span>
-<span id="cb11-6"><a href="#cb11-6"></a><span class="fu">getwd</span>()</span>
-<span id="cb11-7"><a href="#cb11-7"></a></span>
-<span id="cb11-8"><a href="#cb11-8"></a><span class="co">#wieder zurück zum Ursprung</span></span>
-<span id="cb11-9"><a href="#cb11-9"></a><span class="fu">setwd</span>(<span class="st">".."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12" data-code-line-numbers="1-2|4-5|6|8-9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co">#aktuelles Working directory abrufen</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">getwd</span>()</span>
+<span id="cb12-3"><a href="#cb12-3"></a></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="co">#anderes working directory setzen</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="fu">setwd</span>(<span class="at">dir =</span> <span class="st">"data"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="fu">getwd</span>()</span>
+<span id="cb12-7"><a href="#cb12-7"></a></span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="co">#wieder zurück zum Ursprung</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="fu">setwd</span>(<span class="st">".."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="daten-einlesen" class="slide level2">
@@ -701,12 +758,12 @@
 <li class="fragment">Base R enthält Funktionen zum Einlesen von Textbasierten Formaten</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb12" data-code-line-numbers="1-3|4-6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co">#csv Datei einlesen</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a>data1 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/data1.csv"</span>)</span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="fu">View</span>(data1)</span>
-<span id="cb12-4"><a href="#cb12-4"></a><span class="co">#tabstopp getrennte Daten einlesen</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a>data2 <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="at">file =</span> <span class="st">"data/data2.txt"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb12-6"><a href="#cb12-6"></a><span class="fu">View</span>(data2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13" data-code-line-numbers="1-3|4-6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co">#csv Datei einlesen</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>data1 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/data1.csv"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="fu">View</span>(data1)</span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="co">#tabstopp getrennte Daten einlesen</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>data2 <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="at">file =</span> <span class="st">"data/data2.txt"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="fu">View</span>(data2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
 <div class="callout callout-tip callout-captioned callout-style-default">
@@ -731,14 +788,14 @@
 <li class="fragment">Eine Liste von Dateien in einem Verzeichnis lässt sich über <code>dir()</code> ausgeben</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb13" data-code-line-numbers="1-2|4-5|7-8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co">#data Verzeichnis listen</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">dir</span>(<span class="st">"data"</span>)</span>
-<span id="cb13-3"><a href="#cb13-3"></a></span>
-<span id="cb13-4"><a href="#cb13-4"></a><span class="co">#Tabelle abspeichern</span></span>
-<span id="cb13-5"><a href="#cb13-5"></a><span class="fu">write.csv</span>(<span class="at">x =</span> data1, <span class="at">file =</span> <span class="st">"data/my_data1.csv"</span>)</span>
-<span id="cb13-6"><a href="#cb13-6"></a></span>
-<span id="cb13-7"><a href="#cb13-7"></a><span class="co">#data Verzeichnis listen</span></span>
-<span id="cb13-8"><a href="#cb13-8"></a><span class="fu">dir</span>(<span class="st">"data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14" data-code-line-numbers="1-2|4-5|7-8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co">#data Verzeichnis listen</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="fu">dir</span>(<span class="st">"data"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3"></a></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="co">#Tabelle abspeichern</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="fu">write.csv</span>(<span class="at">x =</span> data1, <span class="at">file =</span> <span class="st">"data/my_data1.csv"</span>)</span>
+<span id="cb14-6"><a href="#cb14-6"></a></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="co">#data Verzeichnis listen</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="fu">dir</span>(<span class="st">"data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="r-spezifische-speicherformate" class="slide level2">
@@ -747,17 +804,17 @@
 <li class="fragment">Beliebige R Objekte können als <strong>.RData</strong>/<strong>.rda</strong> oder <strong>.rds</strong> gespeichert werden.</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb14" data-code-line-numbers="1-2|3-4|6-7|9-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co">#Einzelnes Objekt speichern</span></span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="fu">save</span>(data1, <span class="at">file =</span> <span class="st">"data/data1.RData"</span>)</span>
-<span id="cb14-3"><a href="#cb14-3"></a><span class="co">#gesamten working space speichern</span></span>
-<span id="cb14-4"><a href="#cb14-4"></a><span class="fu">save.image</span>(<span class="at">file =</span> <span class="st">"data/alldata.RData"</span>)</span>
-<span id="cb14-5"><a href="#cb14-5"></a></span>
-<span id="cb14-6"><a href="#cb14-6"></a><span class="co">#working space löschen</span></span>
-<span id="cb14-7"><a href="#cb14-7"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>())</span>
-<span id="cb14-8"><a href="#cb14-8"></a></span>
-<span id="cb14-9"><a href="#cb14-9"></a><span class="co">#Daten wieder einlesen</span></span>
-<span id="cb14-10"><a href="#cb14-10"></a><span class="fu">load</span>(<span class="st">"data/data1.RData"</span>)</span>
-<span id="cb14-11"><a href="#cb14-11"></a><span class="fu">load</span>(<span class="st">"data/alldata.RData"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15" data-code-line-numbers="1-2|3-4|6-7|9-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">#Einzelnes Objekt speichern</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">save</span>(data1, <span class="at">file =</span> <span class="st">"data/data1.RData"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="co">#gesamten working space speichern</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="fu">save.image</span>(<span class="at">file =</span> <span class="st">"data/alldata.RData"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5"></a></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="co">#working space löschen</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>())</span>
+<span id="cb15-8"><a href="#cb15-8"></a></span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="co">#Daten wieder einlesen</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="fu">load</span>(<span class="st">"data/data1.RData"</span>)</span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="fu">load</span>(<span class="st">"data/alldata.RData"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>
@@ -772,16 +829,16 @@
 <li class="fragment">Zeilen können über Position und logische Bedinungen ausgwählt werden</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb15" data-code-line-numbers="1-3|5-6|8-19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">#Spalten auswählen</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a>data1[, <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)]</span>
-<span id="cb15-3"><a href="#cb15-3"></a>data1[, <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"id"</span>)]</span>
-<span id="cb15-4"><a href="#cb15-4"></a></span>
-<span id="cb15-5"><a href="#cb15-5"></a><span class="co">#Einzelne Variable als Vektor aufrufen</span></span>
-<span id="cb15-6"><a href="#cb15-6"></a>data1<span class="sc">$</span>weight</span>
-<span id="cb15-7"><a href="#cb15-7"></a></span>
-<span id="cb15-8"><a href="#cb15-8"></a><span class="co">#Zeilen auswählen</span></span>
-<span id="cb15-9"><a href="#cb15-9"></a>data1[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>), ]</span>
-<span id="cb15-10"><a href="#cb15-10"></a>data1[age <span class="sc">&gt;</span> <span class="dv">40</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16" data-code-line-numbers="1-3|5-6|8-19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co">#Spalten auswählen</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>data1[, <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)]</span>
+<span id="cb16-3"><a href="#cb16-3"></a>data1[, <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"id"</span>)]</span>
+<span id="cb16-4"><a href="#cb16-4"></a></span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="co">#Einzelne Variable als Vektor aufrufen</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a>data1<span class="sc">$</span>weight</span>
+<span id="cb16-7"><a href="#cb16-7"></a></span>
+<span id="cb16-8"><a href="#cb16-8"></a><span class="co">#Zeilen auswählen</span></span>
+<span id="cb16-9"><a href="#cb16-9"></a>data1[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>), ]</span>
+<span id="cb16-10"><a href="#cb16-10"></a>data1[age <span class="sc">&gt;</span> <span class="dv">40</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="spaltennamen-ändern" class="slide level2">
@@ -790,15 +847,15 @@
 <li class="fragment">Spaltennamen können über <code>colnames()</code> angezeigt und verändert werden</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb16" data-code-line-numbers="1-2|4-5|7-9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co">#alle Spaltennamen anzeigen</span></span>
-<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">colnames</span>(data2)</span>
-<span id="cb16-3"><a href="#cb16-3"></a></span>
-<span id="cb16-4"><a href="#cb16-4"></a><span class="co">#einzelner Spaltenname</span></span>
-<span id="cb16-5"><a href="#cb16-5"></a><span class="fu">colnames</span>(data2)[<span class="dv">3</span>]</span>
-<span id="cb16-6"><a href="#cb16-6"></a></span>
-<span id="cb16-7"><a href="#cb16-7"></a><span class="co">#neuen Wert zuweisen</span></span>
-<span id="cb16-8"><a href="#cb16-8"></a><span class="fu">colnames</span>(data2)[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="st">"id"</span></span>
-<span id="cb16-9"><a href="#cb16-9"></a><span class="fu">colnames</span>(data2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17" data-code-line-numbers="1-2|4-5|7-9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co">#alle Spaltennamen anzeigen</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="fu">colnames</span>(data2)</span>
+<span id="cb17-3"><a href="#cb17-3"></a></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="co">#einzelner Spaltenname</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="fu">colnames</span>(data2)[<span class="dv">3</span>]</span>
+<span id="cb17-6"><a href="#cb17-6"></a></span>
+<span id="cb17-7"><a href="#cb17-7"></a><span class="co">#neuen Wert zuweisen</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a><span class="fu">colnames</span>(data2)[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="st">"id"</span></span>
+<span id="cb17-9"><a href="#cb17-9"></a><span class="fu">colnames</span>(data2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="faktoren" class="slide level2">
@@ -809,17 +866,17 @@
 <li class="fragment">Levels Können geordnet oder ungeordnet sein</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb17" data-code-line-numbers="1-4|5-9|10-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co">#unordered</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a>gender <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"male"</span>, <span class="st">"female"</span>, <span class="st">"female"</span>),</span>
-<span id="cb17-3"><a href="#cb17-3"></a>              <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"female"</span>, <span class="st">"male"</span>, <span class="st">"diverse"</span>))</span>
-<span id="cb17-4"><a href="#cb17-4"></a>gender</span>
-<span id="cb17-5"><a href="#cb17-5"></a><span class="co">#ordered</span></span>
-<span id="cb17-6"><a href="#cb17-6"></a>dose <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"high"</span>, <span class="st">"high"</span>, <span class="st">"medium"</span>, <span class="st">"high"</span>),</span>
-<span id="cb17-7"><a href="#cb17-7"></a>               <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"low"</span>, <span class="st">"medium"</span>, <span class="st">"high"</span>),</span>
-<span id="cb17-8"><a href="#cb17-8"></a>               <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb17-9"><a href="#cb17-9"></a>dose</span>
-<span id="cb17-10"><a href="#cb17-10"></a><span class="co">#structure</span></span>
-<span id="cb17-11"><a href="#cb17-11"></a><span class="fu">str</span>(dose)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18" data-code-line-numbers="1-4|5-9|10-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co">#unordered</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>gender <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"male"</span>, <span class="st">"female"</span>, <span class="st">"female"</span>),</span>
+<span id="cb18-3"><a href="#cb18-3"></a>              <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"female"</span>, <span class="st">"male"</span>, <span class="st">"diverse"</span>))</span>
+<span id="cb18-4"><a href="#cb18-4"></a>gender</span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="co">#ordered</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a>dose <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"high"</span>, <span class="st">"high"</span>, <span class="st">"medium"</span>, <span class="st">"high"</span>),</span>
+<span id="cb18-7"><a href="#cb18-7"></a>               <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"low"</span>, <span class="st">"medium"</span>, <span class="st">"high"</span>),</span>
+<span id="cb18-8"><a href="#cb18-8"></a>               <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-9"><a href="#cb18-9"></a>dose</span>
+<span id="cb18-10"><a href="#cb18-10"></a><span class="co">#structure</span></span>
+<span id="cb18-11"><a href="#cb18-11"></a><span class="fu">str</span>(dose)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="datentypen-umwandeln" class="slide level2">
@@ -829,16 +886,16 @@
 <li class="fragment">Variablen in bestehenden Tabellen können durch Zuweisung überschrieben werden</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb18" data-code-line-numbers="1-2|3-4|6-8|9-10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co">#Könnte ein Faktor sein</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a>data2<span class="sc">$</span>eyecolor</span>
-<span id="cb18-3"><a href="#cb18-3"></a><span class="co">#Aber kein numeric</span></span>
-<span id="cb18-4"><a href="#cb18-4"></a><span class="fu">as.numeric</span>(data2<span class="sc">$</span>eyecolor)</span>
-<span id="cb18-5"><a href="#cb18-5"></a></span>
-<span id="cb18-6"><a href="#cb18-6"></a><span class="co">#Im Datensatz zu Faktor machen</span></span>
-<span id="cb18-7"><a href="#cb18-7"></a><span class="fu">as.factor</span>(data2<span class="sc">$</span>eyecolor)</span>
-<span id="cb18-8"><a href="#cb18-8"></a>data2<span class="sc">$</span>eyecolor <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(data2<span class="sc">$</span>eyecolor)</span>
-<span id="cb18-9"><a href="#cb18-9"></a><span class="co">#Jetzt sind intern numerische Levels hinterlegt</span></span>
-<span id="cb18-10"><a href="#cb18-10"></a><span class="fu">as.numeric</span>(data2<span class="sc">$</span>eyecolor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19" data-code-line-numbers="1-2|3-4|6-8|9-10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co">#Könnte ein Faktor sein</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>data2<span class="sc">$</span>eyecolor</span>
+<span id="cb19-3"><a href="#cb19-3"></a><span class="co">#Aber kein numeric</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="fu">as.numeric</span>(data2<span class="sc">$</span>eyecolor)</span>
+<span id="cb19-5"><a href="#cb19-5"></a></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="co">#Im Datensatz zu Faktor machen</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a><span class="fu">as.factor</span>(data2<span class="sc">$</span>eyecolor)</span>
+<span id="cb19-8"><a href="#cb19-8"></a>data2<span class="sc">$</span>eyecolor <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(data2<span class="sc">$</span>eyecolor)</span>
+<span id="cb19-9"><a href="#cb19-9"></a><span class="co">#Jetzt sind intern numerische Levels hinterlegt</span></span>
+<span id="cb19-10"><a href="#cb19-10"></a><span class="fu">as.numeric</span>(data2<span class="sc">$</span>eyecolor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="datentypen-umwandeln-1" class="slide level2">
@@ -847,17 +904,17 @@
 <li class="fragment">Scheinbar numerische Variablen wie IDs <em>sollten</em> in character Vektoren umgewandelt werden um später falsches Handling zu vermeiden</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb19" data-code-line-numbers="1-3|5-7|9-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co">#Mit id sollte man nicht rechnen können</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a><span class="fu">class</span>(data2<span class="sc">$</span>id)</span>
-<span id="cb19-3"><a href="#cb19-3"></a><span class="fu">mean</span>(data2<span class="sc">$</span>id)</span>
-<span id="cb19-4"><a href="#cb19-4"></a></span>
-<span id="cb19-5"><a href="#cb19-5"></a><span class="co">#Umwandlung in character</span></span>
-<span id="cb19-6"><a href="#cb19-6"></a>data1<span class="sc">$</span>id <span class="ot">&lt;-</span> <span class="fu">as.character</span>(data1<span class="sc">$</span>id)</span>
-<span id="cb19-7"><a href="#cb19-7"></a>data2<span class="sc">$</span>id <span class="ot">&lt;-</span> <span class="fu">as.character</span>(data2<span class="sc">$</span>id)</span>
-<span id="cb19-8"><a href="#cb19-8"></a></span>
-<span id="cb19-9"><a href="#cb19-9"></a><span class="co">#Jetzt lässt R nicht mehr rechnen</span></span>
-<span id="cb19-10"><a href="#cb19-10"></a>data1<span class="sc">$</span>id</span>
-<span id="cb19-11"><a href="#cb19-11"></a><span class="fu">mean</span>(data1<span class="sc">$</span>id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20" data-code-line-numbers="1-3|5-7|9-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co">#Mit id sollte man nicht rechnen können</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="fu">class</span>(data2<span class="sc">$</span>id)</span>
+<span id="cb20-3"><a href="#cb20-3"></a><span class="fu">mean</span>(data2<span class="sc">$</span>id)</span>
+<span id="cb20-4"><a href="#cb20-4"></a></span>
+<span id="cb20-5"><a href="#cb20-5"></a><span class="co">#Umwandlung in character</span></span>
+<span id="cb20-6"><a href="#cb20-6"></a>data1<span class="sc">$</span>id <span class="ot">&lt;-</span> <span class="fu">as.character</span>(data1<span class="sc">$</span>id)</span>
+<span id="cb20-7"><a href="#cb20-7"></a>data2<span class="sc">$</span>id <span class="ot">&lt;-</span> <span class="fu">as.character</span>(data2<span class="sc">$</span>id)</span>
+<span id="cb20-8"><a href="#cb20-8"></a></span>
+<span id="cb20-9"><a href="#cb20-9"></a><span class="co">#Jetzt lässt R nicht mehr rechnen</span></span>
+<span id="cb20-10"><a href="#cb20-10"></a>data1<span class="sc">$</span>id</span>
+<span id="cb20-11"><a href="#cb20-11"></a><span class="fu">mean</span>(data1<span class="sc">$</span>id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="neue-variablen-erstellen" class="slide level2">
@@ -867,14 +924,14 @@
 <li class="fragment">Zu kurze Vektoren werden dabei recycelt</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb20" data-code-line-numbers="1-3|5-6|7-8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co">#Variable mit 0 initialisieren</span></span>
-<span id="cb20-2"><a href="#cb20-2"></a>data2<span class="sc">$</span>blueEyes <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb20-3"><a href="#cb20-3"></a>data2</span>
-<span id="cb20-4"><a href="#cb20-4"></a></span>
-<span id="cb20-5"><a href="#cb20-5"></a><span class="co">#An den richtigen Stellen 1 einsetzen</span></span>
-<span id="cb20-6"><a href="#cb20-6"></a>data2[data2<span class="sc">$</span>eyecolor<span class="sc">==</span><span class="st">"blue"</span>,]</span>
-<span id="cb20-7"><a href="#cb20-7"></a>data2[data2<span class="sc">$</span>eyecolor<span class="sc">==</span><span class="st">"blue"</span>,]<span class="sc">$</span>blueEyes <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb20-8"><a href="#cb20-8"></a>data2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21" data-code-line-numbers="1-3|5-6|7-8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co">#Variable mit 0 initialisieren</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>data2<span class="sc">$</span>blueEyes <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>data2</span>
+<span id="cb21-4"><a href="#cb21-4"></a></span>
+<span id="cb21-5"><a href="#cb21-5"></a><span class="co">#An den richtigen Stellen 1 einsetzen</span></span>
+<span id="cb21-6"><a href="#cb21-6"></a>data2[data2<span class="sc">$</span>eyecolor<span class="sc">==</span><span class="st">"blue"</span>,]</span>
+<span id="cb21-7"><a href="#cb21-7"></a>data2[data2<span class="sc">$</span>eyecolor<span class="sc">==</span><span class="st">"blue"</span>,]<span class="sc">$</span>blueEyes <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a>data2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="datensätze-mergen" class="slide level2">
@@ -884,21 +941,21 @@
 <li class="fragment">Base R Variante für einfache Standard-Varianten</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb21" data-code-line-numbers="1-5|6-10|11-15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co">#Inner join</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a><span class="fu">merge</span>(<span class="at">x =</span> data1, </span>
-<span id="cb21-3"><a href="#cb21-3"></a>      <span class="at">y =</span> data2,</span>
-<span id="cb21-4"><a href="#cb21-4"></a>      <span class="at">by =</span> <span class="st">"id"</span>,</span>
-<span id="cb21-5"><a href="#cb21-5"></a>      <span class="at">all =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb21-6"><a href="#cb21-6"></a><span class="co">#Full join</span></span>
-<span id="cb21-7"><a href="#cb21-7"></a><span class="fu">merge</span>(<span class="at">x =</span> data1, </span>
-<span id="cb21-8"><a href="#cb21-8"></a>      <span class="at">y =</span> data2,</span>
-<span id="cb21-9"><a href="#cb21-9"></a>      <span class="at">by =</span> <span class="st">"id"</span>,</span>
-<span id="cb21-10"><a href="#cb21-10"></a>      <span class="at">all =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb21-11"><a href="#cb21-11"></a><span class="co">#Left join</span></span>
-<span id="cb21-12"><a href="#cb21-12"></a><span class="fu">merge</span>(<span class="at">x =</span> data1, </span>
-<span id="cb21-13"><a href="#cb21-13"></a>      <span class="at">y =</span> data2,</span>
-<span id="cb21-14"><a href="#cb21-14"></a>      <span class="at">by =</span> <span class="st">"id"</span>,</span>
-<span id="cb21-15"><a href="#cb21-15"></a>      <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22" data-code-line-numbers="1-5|6-10|11-15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co">#Inner join</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="fu">merge</span>(<span class="at">x =</span> data1, </span>
+<span id="cb22-3"><a href="#cb22-3"></a>      <span class="at">y =</span> data2,</span>
+<span id="cb22-4"><a href="#cb22-4"></a>      <span class="at">by =</span> <span class="st">"id"</span>,</span>
+<span id="cb22-5"><a href="#cb22-5"></a>      <span class="at">all =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb22-6"><a href="#cb22-6"></a><span class="co">#Full join</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a><span class="fu">merge</span>(<span class="at">x =</span> data1, </span>
+<span id="cb22-8"><a href="#cb22-8"></a>      <span class="at">y =</span> data2,</span>
+<span id="cb22-9"><a href="#cb22-9"></a>      <span class="at">by =</span> <span class="st">"id"</span>,</span>
+<span id="cb22-10"><a href="#cb22-10"></a>      <span class="at">all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-11"><a href="#cb22-11"></a><span class="co">#Left join</span></span>
+<span id="cb22-12"><a href="#cb22-12"></a><span class="fu">merge</span>(<span class="at">x =</span> data1, </span>
+<span id="cb22-13"><a href="#cb22-13"></a>      <span class="at">y =</span> data2,</span>
+<span id="cb22-14"><a href="#cb22-14"></a>      <span class="at">by =</span> <span class="st">"id"</span>,</span>
+<span id="cb22-15"><a href="#cb22-15"></a>      <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="vektorrechnung-in-der-variablenerstellung" class="slide level2">
@@ -908,20 +965,26 @@
 <li class="fragment">Durch R’s vektorisierte Rechenoperationen schnell und unkompliziert</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb22" data-code-line-numbers="1-5|6-7|8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co">#Vollen Datensatz erstellen</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a>data <span class="ot">&lt;-</span> <span class="fu">merge</span>(<span class="at">x =</span> data1, </span>
-<span id="cb22-3"><a href="#cb22-3"></a>              <span class="at">y =</span> data2,</span>
-<span id="cb22-4"><a href="#cb22-4"></a>              <span class="at">by =</span> <span class="st">"id"</span>,</span>
-<span id="cb22-5"><a href="#cb22-5"></a>              <span class="at">all =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb22-6"><a href="#cb22-6"></a><span class="co">#BMI berechnen</span></span>
-<span id="cb22-7"><a href="#cb22-7"></a>data<span class="sc">$</span>BMI <span class="ot">&lt;-</span> data<span class="sc">$</span>weight<span class="sc">/</span>(data<span class="sc">$</span>height<span class="sc">/</span><span class="dv">100</span>)<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb22-8"><a href="#cb22-8"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23" data-code-line-numbers="1-5|6-7|8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co">#Vollen Datensatz erstellen</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>data <span class="ot">&lt;-</span> <span class="fu">merge</span>(<span class="at">x =</span> data1, </span>
+<span id="cb23-3"><a href="#cb23-3"></a>              <span class="at">y =</span> data2,</span>
+<span id="cb23-4"><a href="#cb23-4"></a>              <span class="at">by =</span> <span class="st">"id"</span>,</span>
+<span id="cb23-5"><a href="#cb23-5"></a>              <span class="at">all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-6"><a href="#cb23-6"></a><span class="co">#BMI berechnen</span></span>
+<span id="cb23-7"><a href="#cb23-7"></a>data<span class="sc">$</span>BMI <span class="ot">&lt;-</span> data<span class="sc">$</span>weight<span class="sc">/</span>(data<span class="sc">$</span>height<span class="sc">/</span><span class="dv">100</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb23-8"><a href="#cb23-8"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>
 <section id="fhircrackr-download-von-daten" class="title-slide slide level1 center">
 <h1>5 fhircrackr: Download von Daten</h1>
 
+</section>
+<section id="vorbereitung-1" class="slide level2">
+<h2>Vorbereitung</h2>
+<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="do">#### Vorbereitung #####</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="co">#Environment bereinigen</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="intro-1" class="slide level2">
 <h2>Intro</h2>
@@ -931,14 +994,14 @@
 <li class="fragment">Sehr ausführliche Doku in den Vignetten</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb23" data-code-line-numbers="1-2|4-5|7-8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co">#erste Installation (für den Kurs nicht nötig)</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="co">#install.packages("fhircrackr")</span></span>
-<span id="cb23-3"><a href="#cb23-3"></a></span>
-<span id="cb23-4"><a href="#cb23-4"></a><span class="co">#Paket laden (1x pro R Session)</span></span>
-<span id="cb23-5"><a href="#cb23-5"></a><span class="fu">library</span>(fhircrackr)</span>
-<span id="cb23-6"><a href="#cb23-6"></a></span>
-<span id="cb23-7"><a href="#cb23-7"></a><span class="co">#Vignetten anschauen</span></span>
-<span id="cb23-8"><a href="#cb23-8"></a><span class="fu">browseVignettes</span>(<span class="at">package =</span> <span class="st">"fhircrackr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25" data-code-line-numbers="1-2|4-5|7-8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co">#erste Installation (für den Kurs nicht nötig)</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="co">#install.packages("fhircrackr")</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a></span>
+<span id="cb25-4"><a href="#cb25-4"></a><span class="co">#Paket laden (1x pro R Session)</span></span>
+<span id="cb25-5"><a href="#cb25-5"></a><span class="fu">library</span>(fhircrackr)</span>
+<span id="cb25-6"><a href="#cb25-6"></a></span>
+<span id="cb25-7"><a href="#cb25-7"></a><span class="co">#Vignetten anschauen</span></span>
+<span id="cb25-8"><a href="#cb25-8"></a>??fhircrackr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="exkurs-s4-klassen" class="slide level2">
@@ -951,32 +1014,32 @@
 </section>
 <section id="exkurs-s4-klassen-1" class="slide level2">
 <h2>Exkurs: S4 Klassen</h2>
-<div class="sourceCode" id="cb24" data-code-line-numbers="1-2|4-8|10-13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co">#Beispiel fhir_url</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a>?fhir_url</span>
-<span id="cb24-3"><a href="#cb24-3"></a></span>
-<span id="cb24-4"><a href="#cb24-4"></a><span class="co">#Konstruktor aufrufen</span></span>
-<span id="cb24-5"><a href="#cb24-5"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">"https://mii-agiop-3p.life.uni-leipzig.de/fhir"</span>,</span>
-<span id="cb24-6"><a href="#cb24-6"></a>                    <span class="at">resource =</span> <span class="st">"Patient"</span>,</span>
-<span id="cb24-7"><a href="#cb24-7"></a>                    <span class="at">parameters =</span> <span class="fu">c</span>(<span class="at">gender =</span> <span class="st">"female"</span>,</span>
-<span id="cb24-8"><a href="#cb24-8"></a>                                   <span class="at">birthdate =</span> <span class="st">"ge1990"</span>))</span>
-<span id="cb24-9"><a href="#cb24-9"></a></span>
-<span id="cb24-10"><a href="#cb24-10"></a><span class="co">#Objekt inspizieren</span></span>
-<span id="cb24-11"><a href="#cb24-11"></a>request</span>
-<span id="cb24-12"><a href="#cb24-12"></a><span class="fu">class</span>(request)</span>
-<span id="cb24-13"><a href="#cb24-13"></a><span class="fu">str</span>(request)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26" data-code-line-numbers="1-2|4-8|10-13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co">#Beispiel fhir_url</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>?fhir_url</span>
+<span id="cb26-3"><a href="#cb26-3"></a></span>
+<span id="cb26-4"><a href="#cb26-4"></a><span class="co">#Konstruktor aufrufen</span></span>
+<span id="cb26-5"><a href="#cb26-5"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">"https://mii-agiop-3p.life.uni-leipzig.de/fhir"</span>,</span>
+<span id="cb26-6"><a href="#cb26-6"></a>                    <span class="at">resource =</span> <span class="st">"Patient"</span>,</span>
+<span id="cb26-7"><a href="#cb26-7"></a>                    <span class="at">parameters =</span> <span class="fu">c</span>(<span class="at">gender =</span> <span class="st">"female"</span>,</span>
+<span id="cb26-8"><a href="#cb26-8"></a>                                   <span class="at">birthdate =</span> <span class="st">"ge1990"</span>))</span>
+<span id="cb26-9"><a href="#cb26-9"></a></span>
+<span id="cb26-10"><a href="#cb26-10"></a><span class="co">#Objekt inspizieren</span></span>
+<span id="cb26-11"><a href="#cb26-11"></a>request</span>
+<span id="cb26-12"><a href="#cb26-12"></a><span class="fu">class</span>(request)</span>
+<span id="cb26-13"><a href="#cb26-13"></a><span class="fu">str</span>(request)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="ressourcen-herunterladen-per-get" class="slide level2">
 <h2>Ressourcen herunterladen per GET</h2>
-<div class="sourceCode" id="cb25" data-code-line-numbers="1-3|5-6|8-10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co">#Download</span></span>
-<span id="cb25-2"><a href="#cb25-2"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> request,</span>
-<span id="cb25-3"><a href="#cb25-3"></a>                       <span class="at">max_bundles =</span> <span class="dv">2</span>)</span>
-<span id="cb25-4"><a href="#cb25-4"></a></span>
-<span id="cb25-5"><a href="#cb25-5"></a><span class="co">#Ergebnis</span></span>
-<span id="cb25-6"><a href="#cb25-6"></a>bundles</span>
-<span id="cb25-7"><a href="#cb25-7"></a></span>
-<span id="cb25-8"><a href="#cb25-8"></a><span class="co">#einzelnes Bundle</span></span>
-<span id="cb25-9"><a href="#cb25-9"></a>bundles[[<span class="dv">1</span>]]</span>
-<span id="cb25-10"><a href="#cb25-10"></a><span class="fu">cat</span>(<span class="fu">toString</span>(bundles[[<span class="dv">1</span>]]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27" data-code-line-numbers="1-3|5-6|8-10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co">#Download</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> request,</span>
+<span id="cb27-3"><a href="#cb27-3"></a>                       <span class="at">max_bundles =</span> <span class="dv">2</span>)</span>
+<span id="cb27-4"><a href="#cb27-4"></a></span>
+<span id="cb27-5"><a href="#cb27-5"></a><span class="co">#Ergebnis</span></span>
+<span id="cb27-6"><a href="#cb27-6"></a>bundles</span>
+<span id="cb27-7"><a href="#cb27-7"></a></span>
+<span id="cb27-8"><a href="#cb27-8"></a><span class="co">#einzelnes Bundle</span></span>
+<span id="cb27-9"><a href="#cb27-9"></a>bundles[[<span class="dv">1</span>]]</span>
+<span id="cb27-10"><a href="#cb27-10"></a><span class="fu">cat</span>(<span class="fu">toString</span>(bundles[[<span class="dv">1</span>]]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="ressourcen-herunterladen-per-get-1" class="slide level2">
 <h2>Ressourcen herunterladen per GET</h2>
@@ -999,18 +1062,18 @@
 <li class="fragment">z.B. wenn viele lange IDs an den Suchparameter <code>_id</code> übergeben werden sollen</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb26" data-code-line-numbers="1-2|4-7|9-12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">"https://mii-agiop-3p.life.uni-leipzig.de/fhir"</span>,</span>
-<span id="cb26-2"><a href="#cb26-2"></a>                    <span class="at">resource =</span> <span class="st">"Patient"</span>)</span>
-<span id="cb26-3"><a href="#cb26-3"></a></span>
-<span id="cb26-4"><a href="#cb26-4"></a><span class="co">#body definieren</span></span>
-<span id="cb26-5"><a href="#cb26-5"></a>body <span class="ot">&lt;-</span> <span class="fu">fhir_body</span>(<span class="at">content =</span> <span class="fu">list</span>(<span class="at">gender =</span> <span class="st">"female"</span>,</span>
-<span id="cb26-6"><a href="#cb26-6"></a>                                 <span class="at">birthdate =</span> <span class="st">"ge1990"</span>))</span>
-<span id="cb26-7"><a href="#cb26-7"></a>body</span>
-<span id="cb26-8"><a href="#cb26-8"></a></span>
-<span id="cb26-9"><a href="#cb26-9"></a><span class="co">#download</span></span>
-<span id="cb26-10"><a href="#cb26-10"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> request,</span>
-<span id="cb26-11"><a href="#cb26-11"></a>                       <span class="at">body =</span> body,</span>
-<span id="cb26-12"><a href="#cb26-12"></a>                       <span class="at">max_bundles =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28" data-code-line-numbers="1-2|4-7|9-12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">"https://mii-agiop-3p.life.uni-leipzig.de/fhir"</span>,</span>
+<span id="cb28-2"><a href="#cb28-2"></a>                    <span class="at">resource =</span> <span class="st">"Patient"</span>)</span>
+<span id="cb28-3"><a href="#cb28-3"></a></span>
+<span id="cb28-4"><a href="#cb28-4"></a><span class="co">#body definieren</span></span>
+<span id="cb28-5"><a href="#cb28-5"></a>body <span class="ot">&lt;-</span> <span class="fu">fhir_body</span>(<span class="at">content =</span> <span class="fu">list</span>(<span class="at">gender =</span> <span class="st">"female"</span>,</span>
+<span id="cb28-6"><a href="#cb28-6"></a>                                 <span class="at">birthdate =</span> <span class="st">"ge1990"</span>))</span>
+<span id="cb28-7"><a href="#cb28-7"></a>body</span>
+<span id="cb28-8"><a href="#cb28-8"></a></span>
+<span id="cb28-9"><a href="#cb28-9"></a><span class="co">#download</span></span>
+<span id="cb28-10"><a href="#cb28-10"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> request,</span>
+<span id="cb28-11"><a href="#cb28-11"></a>                       <span class="at">body =</span> body,</span>
+<span id="cb28-12"><a href="#cb28-12"></a>                       <span class="at">max_bundles =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="umgang-mit-http-fehlern" class="slide level2">
@@ -1021,15 +1084,15 @@
 <li class="fragment">Über <code>fhir_recent_http_error()</code> den zuletzt geworfenen Fehler aufrufen</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb27" data-code-line-numbers=""><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co">#Fehlende Authentifizierung</span></span>
-<span id="cb27-2"><a href="#cb27-2"></a><span class="fu">fhir_search</span>(<span class="st">"https://mii-agiop-polar.life.uni-leipzig.de/fhir/Patient"</span>)</span>
-<span id="cb27-3"><a href="#cb27-3"></a></span>
-<span id="cb27-4"><a href="#cb27-4"></a><span class="co">#Fehler aufrufen</span></span>
-<span id="cb27-5"><a href="#cb27-5"></a><span class="fu">cat</span>(<span class="fu">fhir_recent_http_error</span>())</span>
-<span id="cb27-6"><a href="#cb27-6"></a></span>
-<span id="cb27-7"><a href="#cb27-7"></a><span class="co">#Falscher Suchparameter</span></span>
-<span id="cb27-8"><a href="#cb27-8"></a><span class="fu">fhir_search</span>(<span class="st">"https://mii-agiop-3p.life.uni-leipzig.de/fhir/Observation?gender=female"</span>,</span>
-<span id="cb27-9"><a href="#cb27-9"></a>            <span class="at">log_errors =</span> <span class="st">"Observation_error.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29" data-code-line-numbers=""><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co">#Fehlende Authentifizierung</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a><span class="fu">fhir_search</span>(<span class="st">"https://mii-agiop-polar.life.uni-leipzig.de/fhir/Patient"</span>)</span>
+<span id="cb29-3"><a href="#cb29-3"></a></span>
+<span id="cb29-4"><a href="#cb29-4"></a><span class="co">#Fehler aufrufen</span></span>
+<span id="cb29-5"><a href="#cb29-5"></a><span class="fu">cat</span>(<span class="fu">fhir_recent_http_error</span>())</span>
+<span id="cb29-6"><a href="#cb29-6"></a></span>
+<span id="cb29-7"><a href="#cb29-7"></a><span class="co">#Falscher Suchparameter</span></span>
+<span id="cb29-8"><a href="#cb29-8"></a><span class="fu">fhir_search</span>(<span class="st">"https://mii-agiop-3p.life.uni-leipzig.de/fhir/Observation?gender=female"</span>,</span>
+<span id="cb29-9"><a href="#cb29-9"></a>            <span class="at">log_errors =</span> <span class="st">"Observation_error.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="bundles-speichern-und-laden" class="slide level2">
@@ -1037,14 +1100,14 @@
 <ul>
 <li class="fragment">Bundles können als xml-Files gespeichert werden . . .</li>
 </ul>
-<div class="sourceCode" id="cb28" data-code-line-numbers="1-2|1,4|1,6-8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="do">### Als xml</span></span>
-<span id="cb28-2"><a href="#cb28-2"></a><span class="fu">fhir_save</span>(<span class="at">bundles =</span> bundles, <span class="at">directory =</span> <span class="st">"PatientBundles"</span>)</span>
-<span id="cb28-3"><a href="#cb28-3"></a></span>
-<span id="cb28-4"><a href="#cb28-4"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
-<span id="cb28-5"><a href="#cb28-5"></a></span>
-<span id="cb28-6"><a href="#cb28-6"></a><span class="co">#laden</span></span>
-<span id="cb28-7"><a href="#cb28-7"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_load</span>(<span class="at">directory =</span> <span class="st">"PatientBundles"</span>)</span>
-<span id="cb28-8"><a href="#cb28-8"></a>bundles</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30" data-code-line-numbers="1-2|1,4|1,6-8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="do">### Als xml</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a><span class="fu">fhir_save</span>(<span class="at">bundles =</span> bundles, <span class="at">directory =</span> <span class="st">"PatientBundles"</span>)</span>
+<span id="cb30-3"><a href="#cb30-3"></a></span>
+<span id="cb30-4"><a href="#cb30-4"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
+<span id="cb30-5"><a href="#cb30-5"></a></span>
+<span id="cb30-6"><a href="#cb30-6"></a><span class="co">#laden</span></span>
+<span id="cb30-7"><a href="#cb30-7"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_load</span>(<span class="at">directory =</span> <span class="st">"PatientBundles"</span>)</span>
+<span id="cb30-8"><a href="#cb30-8"></a>bundles</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="bundles-speichern-und-laden-1" class="slide level2">
 <h2>Bundles Speichern und laden</h2>
@@ -1052,22 +1115,23 @@
 <li class="fragment">Bundles können auch als .RData-Objekte gespeichert werden</li>
 <li class="fragment">Speichern als .RData erfordert vorherige Serialisierung, da sonst External Pointer kaputt gehen</li>
 </ul>
-<div class="fragment">
-<div class="sourceCode" id="cb29" data-code-line-numbers="1-4|1,6,7|1,9|1,11-14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="do">### Als RData</span></span>
-<span id="cb29-2"><a href="#cb29-2"></a><span class="co">#Serialize</span></span>
-<span id="cb29-3"><a href="#cb29-3"></a>bundles_serialized <span class="ot">&lt;-</span> <span class="fu">fhir_serialize</span>(bundles)</span>
-<span id="cb29-4"><a href="#cb29-4"></a>bundles_serialized</span>
-<span id="cb29-5"><a href="#cb29-5"></a></span>
-<span id="cb29-6"><a href="#cb29-6"></a><span class="co">#speichern</span></span>
-<span id="cb29-7"><a href="#cb29-7"></a><span class="fu">save</span>(bundles_serialized, <span class="at">file =</span> <span class="st">"PatientBundles/bundles.RData"</span>)</span>
-<span id="cb29-8"><a href="#cb29-8"></a></span>
-<span id="cb29-9"><a href="#cb29-9"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>())</span>
-<span id="cb29-10"><a href="#cb29-10"></a></span>
-<span id="cb29-11"><a href="#cb29-11"></a><span class="co">#laden</span></span>
-<span id="cb29-12"><a href="#cb29-12"></a><span class="fu">load</span>(<span class="st">"PatientBundles/bundles.RData"</span>)</span>
-<span id="cb29-13"><a href="#cb29-13"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_unserialize</span>(bundles_serialized)</span>
-<span id="cb29-14"><a href="#cb29-14"></a>bundles</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+</section>
+<section id="bundles-speichern-und-laden-2" class="slide level2">
+<h2>Bundles Speichern und laden</h2>
+<div class="sourceCode" id="cb31" data-code-line-numbers="1-4|1,6,7|1,9|1,11-14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="do">### Als RData</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a><span class="co">#Serialize</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a>bundles_serialized <span class="ot">&lt;-</span> <span class="fu">fhir_serialize</span>(bundles)</span>
+<span id="cb31-4"><a href="#cb31-4"></a>bundles_serialized</span>
+<span id="cb31-5"><a href="#cb31-5"></a></span>
+<span id="cb31-6"><a href="#cb31-6"></a><span class="co">#speichern</span></span>
+<span id="cb31-7"><a href="#cb31-7"></a><span class="fu">save</span>(bundles_serialized, <span class="at">file =</span> <span class="st">"PatientBundles/bundles.RData"</span>)</span>
+<span id="cb31-8"><a href="#cb31-8"></a></span>
+<span id="cb31-9"><a href="#cb31-9"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>())</span>
+<span id="cb31-10"><a href="#cb31-10"></a></span>
+<span id="cb31-11"><a href="#cb31-11"></a><span class="co">#laden</span></span>
+<span id="cb31-12"><a href="#cb31-12"></a><span class="fu">load</span>(<span class="st">"PatientBundles/bundles.RData"</span>)</span>
+<span id="cb31-13"><a href="#cb31-13"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_unserialize</span>(bundles_serialized)</span>
+<span id="cb31-14"><a href="#cb31-14"></a>bundles</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section></section>
 <section>
 <section id="fhircrackr-verflachen-von-daten" class="title-slide slide level1 center">
@@ -1089,13 +1153,13 @@
 <li class="fragment">Diese Form extrahiert alle vorhandenen FHIR-Elemente in Spalten</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb30" data-code-line-numbers="1-3|5-7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="co">#Einfachste Form</span></span>
-<span id="cb30-2"><a href="#cb30-2"></a>pat_desc <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Patient"</span>)</span>
-<span id="cb30-3"><a href="#cb30-3"></a>pat_desc</span>
-<span id="cb30-4"><a href="#cb30-4"></a></span>
-<span id="cb30-5"><a href="#cb30-5"></a><span class="co">#cracken</span></span>
-<span id="cb30-6"><a href="#cb30-6"></a>patients <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> pat_desc)</span>
-<span id="cb30-7"><a href="#cb30-7"></a><span class="fu">View</span>(patients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32" data-code-line-numbers="1-3|5-7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co">#Einfachste Form</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a>pat_desc <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Patient"</span>)</span>
+<span id="cb32-3"><a href="#cb32-3"></a>pat_desc</span>
+<span id="cb32-4"><a href="#cb32-4"></a></span>
+<span id="cb32-5"><a href="#cb32-5"></a><span class="co">#cracken</span></span>
+<span id="cb32-6"><a href="#cb32-6"></a>patients <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> pat_desc)</span>
+<span id="cb32-7"><a href="#cb32-7"></a><span class="fu">View</span>(patients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="spaltenbeschreibung" class="slide level2">
@@ -1108,23 +1172,23 @@
 </section>
 <section id="spaltenbeschreibung-1" class="slide level2">
 <h2>Spaltenbeschreibung</h2>
-<div class="sourceCode" id="cb31" data-code-line-numbers="1-5|6-8|10-14|15-17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co">#selbstgewählte Spaltennamen</span></span>
-<span id="cb31-2"><a href="#cb31-2"></a>pat_desc <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Patient"</span>,</span>
-<span id="cb31-3"><a href="#cb31-3"></a>                                   <span class="at">cols =</span> <span class="fu">c</span>(<span class="at">Stadt =</span> <span class="st">"address/city"</span>,</span>
-<span id="cb31-4"><a href="#cb31-4"></a>                                            <span class="at">Geschlecht =</span> <span class="st">"gender"</span>))</span>
-<span id="cb31-5"><a href="#cb31-5"></a>pat_desc</span>
-<span id="cb31-6"><a href="#cb31-6"></a><span class="co">#cracken</span></span>
-<span id="cb31-7"><a href="#cb31-7"></a>patients <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> pat_desc)</span>
-<span id="cb31-8"><a href="#cb31-8"></a><span class="fu">View</span>(patients)</span>
-<span id="cb31-9"><a href="#cb31-9"></a></span>
-<span id="cb31-10"><a href="#cb31-10"></a><span class="co">#automatische Spaltennamen</span></span>
-<span id="cb31-11"><a href="#cb31-11"></a>pat_desc <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Patient"</span>,</span>
-<span id="cb31-12"><a href="#cb31-12"></a>                                   <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"address/city"</span>,</span>
-<span id="cb31-13"><a href="#cb31-13"></a>                                            <span class="st">"gender"</span>))</span>
-<span id="cb31-14"><a href="#cb31-14"></a>pat_desc</span>
-<span id="cb31-15"><a href="#cb31-15"></a><span class="co">#cracken</span></span>
-<span id="cb31-16"><a href="#cb31-16"></a>patients <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> pat_desc)</span>
-<span id="cb31-17"><a href="#cb31-17"></a><span class="fu">View</span>(patients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb33" data-code-line-numbers="1-5|6-8|10-14|15-17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co">#selbstgewählte Spaltennamen</span></span>
+<span id="cb33-2"><a href="#cb33-2"></a>pat_desc <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Patient"</span>,</span>
+<span id="cb33-3"><a href="#cb33-3"></a>                                   <span class="at">cols =</span> <span class="fu">c</span>(<span class="at">Stadt =</span> <span class="st">"address/city"</span>,</span>
+<span id="cb33-4"><a href="#cb33-4"></a>                                            <span class="at">Geschlecht =</span> <span class="st">"gender"</span>))</span>
+<span id="cb33-5"><a href="#cb33-5"></a>pat_desc</span>
+<span id="cb33-6"><a href="#cb33-6"></a><span class="co">#cracken</span></span>
+<span id="cb33-7"><a href="#cb33-7"></a>patients <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> pat_desc)</span>
+<span id="cb33-8"><a href="#cb33-8"></a><span class="fu">View</span>(patients)</span>
+<span id="cb33-9"><a href="#cb33-9"></a></span>
+<span id="cb33-10"><a href="#cb33-10"></a><span class="co">#automatische Spaltennamen</span></span>
+<span id="cb33-11"><a href="#cb33-11"></a>pat_desc <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Patient"</span>,</span>
+<span id="cb33-12"><a href="#cb33-12"></a>                                   <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"address/city"</span>,</span>
+<span id="cb33-13"><a href="#cb33-13"></a>                                            <span class="st">"gender"</span>))</span>
+<span id="cb33-14"><a href="#cb33-14"></a>pat_desc</span>
+<span id="cb33-15"><a href="#cb33-15"></a><span class="co">#cracken</span></span>
+<span id="cb33-16"><a href="#cb33-16"></a>patients <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> pat_desc)</span>
+<span id="cb33-17"><a href="#cb33-17"></a><span class="fu">View</span>(patients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="multiple-elemente" class="slide level2">
 <h2>Multiple Elemente</h2>
@@ -1136,26 +1200,26 @@
 </section>
 <section id="multiple-elemente-1" class="slide level2">
 <h2>Multiple Elemente</h2>
-<div class="sourceCode" id="cb32" data-code-line-numbers="1-3|5-11|13-20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co">#Beispielbundle verfügbar machen</span></span>
-<span id="cb32-2"><a href="#cb32-2"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_unserialize</span>(example_bundles1)</span>
-<span id="cb32-3"><a href="#cb32-3"></a><span class="fu">cat</span>(<span class="fu">toString</span>(bundles[[<span class="dv">1</span>]]))</span>
-<span id="cb32-4"><a href="#cb32-4"></a></span>
-<span id="cb32-5"><a href="#cb32-5"></a><span class="co">#cracken ohne Indizes</span></span>
-<span id="cb32-6"><a href="#cb32-6"></a>pat_desc <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Patient"</span>,</span>
-<span id="cb32-7"><a href="#cb32-7"></a>                                   <span class="at">sep =</span> <span class="st">" | "</span>)</span>
-<span id="cb32-8"><a href="#cb32-8"></a>                                   </span>
-<span id="cb32-9"><a href="#cb32-9"></a>patients_compact <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> pat_desc)</span>
-<span id="cb32-10"><a href="#cb32-10"></a>                       </span>
-<span id="cb32-11"><a href="#cb32-11"></a><span class="fu">View</span>(patients_compact)</span>
-<span id="cb32-12"><a href="#cb32-12"></a></span>
-<span id="cb32-13"><a href="#cb32-13"></a><span class="co">#cracken mit Indizes</span></span>
-<span id="cb32-14"><a href="#cb32-14"></a>pat_desc <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Patient"</span>,</span>
-<span id="cb32-15"><a href="#cb32-15"></a>                                   <span class="at">sep =</span> <span class="st">" | "</span>,</span>
-<span id="cb32-16"><a href="#cb32-16"></a>                                   <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">"["</span>, <span class="st">"]"</span>))</span>
-<span id="cb32-17"><a href="#cb32-17"></a>                                   </span>
-<span id="cb32-18"><a href="#cb32-18"></a>patients_compact <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> pat_desc)</span>
-<span id="cb32-19"><a href="#cb32-19"></a>                       </span>
-<span id="cb32-20"><a href="#cb32-20"></a><span class="fu">View</span>(patients_compact)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34" data-code-line-numbers="1-3|5-11|13-20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co">#Beispielbundle verfügbar machen</span></span>
+<span id="cb34-2"><a href="#cb34-2"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_unserialize</span>(example_bundles1)</span>
+<span id="cb34-3"><a href="#cb34-3"></a><span class="fu">cat</span>(<span class="fu">toString</span>(bundles[[<span class="dv">1</span>]]))</span>
+<span id="cb34-4"><a href="#cb34-4"></a></span>
+<span id="cb34-5"><a href="#cb34-5"></a><span class="co">#cracken ohne Indizes</span></span>
+<span id="cb34-6"><a href="#cb34-6"></a>pat_desc <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Patient"</span>,</span>
+<span id="cb34-7"><a href="#cb34-7"></a>                                   <span class="at">sep =</span> <span class="st">" | "</span>)</span>
+<span id="cb34-8"><a href="#cb34-8"></a>                                   </span>
+<span id="cb34-9"><a href="#cb34-9"></a>patients_compact <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> pat_desc)</span>
+<span id="cb34-10"><a href="#cb34-10"></a>                       </span>
+<span id="cb34-11"><a href="#cb34-11"></a><span class="fu">View</span>(patients_compact)</span>
+<span id="cb34-12"><a href="#cb34-12"></a></span>
+<span id="cb34-13"><a href="#cb34-13"></a><span class="co">#cracken mit Indizes</span></span>
+<span id="cb34-14"><a href="#cb34-14"></a>pat_desc <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Patient"</span>,</span>
+<span id="cb34-15"><a href="#cb34-15"></a>                                   <span class="at">sep =</span> <span class="st">" | "</span>,</span>
+<span id="cb34-16"><a href="#cb34-16"></a>                                   <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">"["</span>, <span class="st">"]"</span>))</span>
+<span id="cb34-17"><a href="#cb34-17"></a>                                   </span>
+<span id="cb34-18"><a href="#cb34-18"></a>patients_compact <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> pat_desc)</span>
+<span id="cb34-19"><a href="#cb34-19"></a>                       </span>
+<span id="cb34-20"><a href="#cb34-20"></a><span class="fu">View</span>(patients_compact)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="wide-format" class="slide level2">
 <h2>Wide format</h2>
@@ -1164,13 +1228,13 @@
 <li class="fragment">Mit <code>format="wide"</code> müssen zwingend <code>brackets</code> angegeben werden.</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>pat_desc <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Patient"</span>,</span>
-<span id="cb33-2"><a href="#cb33-2"></a>                                   <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">"["</span>, <span class="st">"]"</span>),</span>
-<span id="cb33-3"><a href="#cb33-3"></a>                                   <span class="at">format =</span> <span class="st">"wide"</span>)</span>
-<span id="cb33-4"><a href="#cb33-4"></a></span>
-<span id="cb33-5"><a href="#cb33-5"></a>patients_wide <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> pat_desc)</span>
-<span id="cb33-6"><a href="#cb33-6"></a></span>
-<span id="cb33-7"><a href="#cb33-7"></a><span class="fu">View</span>(patients_wide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>pat_desc <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Patient"</span>,</span>
+<span id="cb35-2"><a href="#cb35-2"></a>                                   <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">"["</span>, <span class="st">"]"</span>),</span>
+<span id="cb35-3"><a href="#cb35-3"></a>                                   <span class="at">format =</span> <span class="st">"wide"</span>)</span>
+<span id="cb35-4"><a href="#cb35-4"></a></span>
+<span id="cb35-5"><a href="#cb35-5"></a>patients_wide <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> pat_desc)</span>
+<span id="cb35-6"><a href="#cb35-6"></a></span>
+<span id="cb35-7"><a href="#cb35-7"></a><span class="fu">View</span>(patients_wide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="melting" class="slide level2">
@@ -1183,32 +1247,32 @@
 </section>
 <section id="melting-1" class="slide level2">
 <h2>Melting</h2>
-<div class="sourceCode" id="cb34" data-code-line-numbers="1-2|1-3|1-4|1-5|1-6|1-7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="do">### melt name</span></span>
-<span id="cb34-2"><a href="#cb34-2"></a>patients_long <span class="ot">&lt;-</span> <span class="fu">fhir_melt</span>(patients_compact, </span>
-<span id="cb34-3"><a href="#cb34-3"></a>                           <span class="at">columns =</span> <span class="st">"name.given"</span>,</span>
-<span id="cb34-4"><a href="#cb34-4"></a>                           <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">"["</span>, <span class="st">"]"</span>),</span>
-<span id="cb34-5"><a href="#cb34-5"></a>                           <span class="at">sep =</span> <span class="st">" | "</span>,</span>
-<span id="cb34-6"><a href="#cb34-6"></a>                           <span class="at">all_columns =</span> T)</span>
-<span id="cb34-7"><a href="#cb34-7"></a><span class="fu">View</span>(patients_long)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb36" data-code-line-numbers="1-2|1-3|1-4|1-5|1-6|1-7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="do">### melt name</span></span>
+<span id="cb36-2"><a href="#cb36-2"></a>patients_long <span class="ot">&lt;-</span> <span class="fu">fhir_melt</span>(patients_compact, </span>
+<span id="cb36-3"><a href="#cb36-3"></a>                           <span class="at">columns =</span> <span class="st">"name.given"</span>,</span>
+<span id="cb36-4"><a href="#cb36-4"></a>                           <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">"["</span>, <span class="st">"]"</span>),</span>
+<span id="cb36-5"><a href="#cb36-5"></a>                           <span class="at">sep =</span> <span class="st">" | "</span>,</span>
+<span id="cb36-6"><a href="#cb36-6"></a>                           <span class="at">all_columns =</span> T)</span>
+<span id="cb36-7"><a href="#cb36-7"></a><span class="fu">View</span>(patients_long)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="melting-2" class="slide level2">
 <h2>Melting</h2>
-<div class="sourceCode" id="cb35" data-code-line-numbers="1-4|6-12|14-16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="do">### melt address</span></span>
-<span id="cb35-2"><a href="#cb35-2"></a><span class="co">#columns to expand</span></span>
-<span id="cb35-3"><a href="#cb35-3"></a>cols <span class="ot">&lt;-</span> <span class="fu">fhir_common_columns</span>(patients_long, <span class="at">column_names_prefix =</span> <span class="st">"address"</span>)</span>
-<span id="cb35-4"><a href="#cb35-4"></a>cols</span>
-<span id="cb35-5"><a href="#cb35-5"></a></span>
-<span id="cb35-6"><a href="#cb35-6"></a><span class="co">#melt</span></span>
-<span id="cb35-7"><a href="#cb35-7"></a>patients_long <span class="ot">&lt;-</span> <span class="fu">fhir_melt</span>(patients_long, </span>
-<span id="cb35-8"><a href="#cb35-8"></a>                           <span class="at">columns =</span> cols,</span>
-<span id="cb35-9"><a href="#cb35-9"></a>                           <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">"["</span>, <span class="st">"]"</span>),</span>
-<span id="cb35-10"><a href="#cb35-10"></a>                           <span class="at">sep =</span> <span class="st">" | "</span>,</span>
-<span id="cb35-11"><a href="#cb35-11"></a>                           <span class="at">all_columns =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb35-12"><a href="#cb35-12"></a><span class="fu">View</span>(patients_long)</span>
-<span id="cb35-13"><a href="#cb35-13"></a></span>
-<span id="cb35-14"><a href="#cb35-14"></a><span class="co">#remove indices</span></span>
-<span id="cb35-15"><a href="#cb35-15"></a>patients_long <span class="ot">&lt;-</span> <span class="fu">fhir_rm_indices</span>(patients_long, <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">"["</span>, <span class="st">"]"</span>))</span>
-<span id="cb35-16"><a href="#cb35-16"></a><span class="fu">View</span>(patients_long)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb37" data-code-line-numbers="1-4|6-12|14-16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="do">### melt address</span></span>
+<span id="cb37-2"><a href="#cb37-2"></a><span class="co">#columns to expand</span></span>
+<span id="cb37-3"><a href="#cb37-3"></a>cols <span class="ot">&lt;-</span> <span class="fu">fhir_common_columns</span>(patients_long, <span class="at">column_names_prefix =</span> <span class="st">"address"</span>)</span>
+<span id="cb37-4"><a href="#cb37-4"></a>cols</span>
+<span id="cb37-5"><a href="#cb37-5"></a></span>
+<span id="cb37-6"><a href="#cb37-6"></a><span class="co">#melt</span></span>
+<span id="cb37-7"><a href="#cb37-7"></a>patients_long <span class="ot">&lt;-</span> <span class="fu">fhir_melt</span>(patients_long, </span>
+<span id="cb37-8"><a href="#cb37-8"></a>                           <span class="at">columns =</span> cols,</span>
+<span id="cb37-9"><a href="#cb37-9"></a>                           <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">"["</span>, <span class="st">"]"</span>),</span>
+<span id="cb37-10"><a href="#cb37-10"></a>                           <span class="at">sep =</span> <span class="st">" | "</span>,</span>
+<span id="cb37-11"><a href="#cb37-11"></a>                           <span class="at">all_columns =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb37-12"><a href="#cb37-12"></a><span class="fu">View</span>(patients_long)</span>
+<span id="cb37-13"><a href="#cb37-13"></a></span>
+<span id="cb37-14"><a href="#cb37-14"></a><span class="co">#remove indices</span></span>
+<span id="cb37-15"><a href="#cb37-15"></a>patients_long <span class="ot">&lt;-</span> <span class="fu">fhir_rm_indices</span>(patients_long, <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">"["</span>, <span class="st">"]"</span>))</span>
+<span id="cb37-16"><a href="#cb37-16"></a><span class="fu">View</span>(patients_long)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="weitere-optionen-in-der-table-description" class="slide level2">
 <h2>Weitere Optionen in der Table Description</h2>
@@ -1219,17 +1283,17 @@
 </section>
 <section id="weitere-optionen-in-der-table-description-1" class="slide level2">
 <h2>Weitere Optionen in der Table Description</h2>
-<div class="sourceCode" id="cb36" data-code-line-numbers="1-3|5-7|9-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co">#Example Bundle mit verschiedenen Attributen</span></span>
-<span id="cb36-2"><a href="#cb36-2"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_unserialize</span>(example_bundles4)</span>
-<span id="cb36-3"><a href="#cb36-3"></a><span class="fu">cat</span>(<span class="fu">toString</span>(bundles[[<span class="dv">1</span>]]))</span>
-<span id="cb36-4"><a href="#cb36-4"></a></span>
-<span id="cb36-5"><a href="#cb36-5"></a><span class="co">#Table description</span></span>
-<span id="cb36-6"><a href="#cb36-6"></a>medication_desc <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Medication"</span>,</span>
-<span id="cb36-7"><a href="#cb36-7"></a>                                          <span class="at">keep_attr =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb36-8"><a href="#cb36-8"></a></span>
-<span id="cb36-9"><a href="#cb36-9"></a><span class="co">#crack</span></span>
-<span id="cb36-10"><a href="#cb36-10"></a>meds <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> medication_desc)</span>
-<span id="cb36-11"><a href="#cb36-11"></a><span class="fu">View</span>(meds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38" data-code-line-numbers="1-3|5-7|9-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co">#Example Bundle mit verschiedenen Attributen</span></span>
+<span id="cb38-2"><a href="#cb38-2"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_unserialize</span>(example_bundles4)</span>
+<span id="cb38-3"><a href="#cb38-3"></a><span class="fu">cat</span>(<span class="fu">toString</span>(bundles[[<span class="dv">1</span>]]))</span>
+<span id="cb38-4"><a href="#cb38-4"></a></span>
+<span id="cb38-5"><a href="#cb38-5"></a><span class="co">#Table description</span></span>
+<span id="cb38-6"><a href="#cb38-6"></a>medication_desc <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Medication"</span>,</span>
+<span id="cb38-7"><a href="#cb38-7"></a>                                          <span class="at">keep_attr =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb38-8"><a href="#cb38-8"></a></span>
+<span id="cb38-9"><a href="#cb38-9"></a><span class="co">#crack</span></span>
+<span id="cb38-10"><a href="#cb38-10"></a>meds <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> medication_desc)</span>
+<span id="cb38-11"><a href="#cb38-11"></a><span class="fu">View</span>(meds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="mehr-als-ein-ressourcentyp" class="slide level2">
 <h2>Mehr als ein Ressourcentyp</h2>
@@ -1242,33 +1306,33 @@
 </section>
 <section id="mehr-als-einen-ressourcentyp-herunterladen" class="slide level2">
 <h2>Mehr als einen Ressourcentyp herunterladen</h2>
-<div class="sourceCode" id="cb37" data-code-line-numbers="1-4|6|8-9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co">#Gemischtes Bundle herunterladen</span></span>
-<span id="cb37-2"><a href="#cb37-2"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">"https://mii-agiop-3p.life.uni-leipzig.de/fhir"</span>,</span>
-<span id="cb37-3"><a href="#cb37-3"></a>                    <span class="at">resource =</span> <span class="st">"MedicationStatement"</span>,</span>
-<span id="cb37-4"><a href="#cb37-4"></a>                    <span class="at">parameters =</span> <span class="fu">c</span>(<span class="st">"_include"</span> <span class="ot">=</span> <span class="st">"MedicationStatement:subject"</span>))</span>
-<span id="cb37-5"><a href="#cb37-5"></a></span>
-<span id="cb37-6"><a href="#cb37-6"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> request, <span class="at">max_bundles =</span> <span class="dv">5</span>)</span>
-<span id="cb37-7"><a href="#cb37-7"></a></span>
-<span id="cb37-8"><a href="#cb37-8"></a><span class="co">#Bundles enthalten MedicationStatements und Patients</span></span>
-<span id="cb37-9"><a href="#cb37-9"></a><span class="fu">cat</span>(<span class="fu">toString</span>(bundles[[<span class="dv">1</span>]]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb39" data-code-line-numbers="1-4|6|8-9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="co">#Gemischtes Bundle herunterladen</span></span>
+<span id="cb39-2"><a href="#cb39-2"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">"https://mii-agiop-3p.life.uni-leipzig.de/fhir"</span>,</span>
+<span id="cb39-3"><a href="#cb39-3"></a>                    <span class="at">resource =</span> <span class="st">"MedicationStatement"</span>,</span>
+<span id="cb39-4"><a href="#cb39-4"></a>                    <span class="at">parameters =</span> <span class="fu">c</span>(<span class="st">"_include"</span> <span class="ot">=</span> <span class="st">"MedicationStatement:subject"</span>))</span>
+<span id="cb39-5"><a href="#cb39-5"></a></span>
+<span id="cb39-6"><a href="#cb39-6"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> request, <span class="at">max_bundles =</span> <span class="dv">5</span>)</span>
+<span id="cb39-7"><a href="#cb39-7"></a></span>
+<span id="cb39-8"><a href="#cb39-8"></a><span class="co">#Bundles enthalten MedicationStatements und Patients</span></span>
+<span id="cb39-9"><a href="#cb39-9"></a><span class="fu">cat</span>(<span class="fu">toString</span>(bundles[[<span class="dv">1</span>]]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="mehr-als-einen-ressourcentyp-cracken" class="slide level2">
 <h2>Mehr als einen Ressourcentyp cracken</h2>
-<div class="sourceCode" id="cb38" data-code-line-numbers="1-3|5-7|9-11|13-15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co">#zwei table descriptions</span></span>
-<span id="cb38-2"><a href="#cb38-2"></a>pat <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Patient"</span>)</span>
-<span id="cb38-3"><a href="#cb38-3"></a>med <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"MedicationStatement"</span>)</span>
-<span id="cb38-4"><a href="#cb38-4"></a></span>
-<span id="cb38-5"><a href="#cb38-5"></a><span class="co">#zwei einzelne Tabellenobjekte</span></span>
-<span id="cb38-6"><a href="#cb38-6"></a>patients <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> pat)</span>
-<span id="cb38-7"><a href="#cb38-7"></a>medications <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> med)</span>
-<span id="cb38-8"><a href="#cb38-8"></a></span>
-<span id="cb38-9"><a href="#cb38-9"></a><span class="co">#Stattdessen eine Liste von Tabellen erzeugen</span></span>
-<span id="cb38-10"><a href="#cb38-10"></a>design <span class="ot">&lt;-</span> <span class="fu">fhir_design</span>(pat, med)</span>
-<span id="cb38-11"><a href="#cb38-11"></a>tables <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> design)</span>
-<span id="cb38-12"><a href="#cb38-12"></a></span>
-<span id="cb38-13"><a href="#cb38-13"></a><span class="co">#inspizieren</span></span>
-<span id="cb38-14"><a href="#cb38-14"></a><span class="fu">View</span>(tables<span class="sc">$</span>pat)</span>
-<span id="cb38-15"><a href="#cb38-15"></a><span class="fu">View</span>(tables<span class="sc">$</span>med)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40" data-code-line-numbers="1-3|5-7|9-11|13-15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="co">#zwei table descriptions</span></span>
+<span id="cb40-2"><a href="#cb40-2"></a>pat <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"Patient"</span>)</span>
+<span id="cb40-3"><a href="#cb40-3"></a>med <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">"MedicationStatement"</span>)</span>
+<span id="cb40-4"><a href="#cb40-4"></a></span>
+<span id="cb40-5"><a href="#cb40-5"></a><span class="co">#zwei einzelne Tabellenobjekte</span></span>
+<span id="cb40-6"><a href="#cb40-6"></a>patients <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> pat)</span>
+<span id="cb40-7"><a href="#cb40-7"></a>medications <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> med)</span>
+<span id="cb40-8"><a href="#cb40-8"></a></span>
+<span id="cb40-9"><a href="#cb40-9"></a><span class="co">#Stattdessen eine Liste von Tabellen erzeugen</span></span>
+<span id="cb40-10"><a href="#cb40-10"></a>design <span class="ot">&lt;-</span> <span class="fu">fhir_design</span>(pat, med)</span>
+<span id="cb40-11"><a href="#cb40-11"></a>tables <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> design)</span>
+<span id="cb40-12"><a href="#cb40-12"></a></span>
+<span id="cb40-13"><a href="#cb40-13"></a><span class="co">#inspizieren</span></span>
+<span id="cb40-14"><a href="#cb40-14"></a><span class="fu">View</span>(tables<span class="sc">$</span>pat)</span>
+<span id="cb40-15"><a href="#cb40-15"></a><span class="fu">View</span>(tables<span class="sc">$</span>med)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section></section>
 <section>
 <section id="beispielanalyse" class="title-slide slide level1 center">
@@ -1285,34 +1349,14 @@
 </section>
 <section id="praktische-übung-1" class="slide level2">
 <h2>Praktische Übung</h2>
-<p>Das Skript <em>7 Beispielanalyse.R</em> führt stückweise durch die notwendigen Schritte.</p>
-<div class="fragment">
-<p>Für jeden Teilschritt:</p>
-<ol type="1">
-<li class="fragment">Selbstständiges Bearbeiten der Teilaufgabe</li>
-<li class="fragment">Gemeinsames besprechen der Lösung</li>
-</ol>
-</div>
+<ul>
+<li class="fragment">Das Skript <em>7 Beispielanalyse.R</em> führt stückweise durch die notwendigen Schritte.</li>
+<li class="fragment">Gruppenarbeit: Selbstständiges Bearbeiten der Teilaufgaben</li>
+<li class="fragment">Wir gehen herum und helfen bei Fragen</li>
+</ul>
 </section>
-<section id="schritt-1-bmi-der-patienten-berechnen" class="slide level2">
-<h2>Schritt 1: BMI der Patienten berechnen</h2>
-<ol type="a">
-<li class="fragment">Observations für Körpergewicht und Körpergröße herunterladen</li>
-<li class="fragment">Observation Ressourcen verflachen</li>
-<li class="fragment">Daten vorbereiten</li>
-<li class="fragment">BMI berechnen</li>
-</ol>
-</section>
-<section id="schritt-2-herausfinden-wer-bluthochdruck-als-komorbiditätsdiagnose-hat" class="slide level2">
-<h2>Schritt 2: Herausfinden, wer Bluthochdruck als Komorbiditätsdiagnose hat</h2>
-<ol type="a">
-<li class="fragment">Encounter- und Condition-Ressourcen über POST herunterladen</li>
-<li class="fragment">Encounter Ressourcen verflachen</li>
-<li class="fragment">Condition Ressourcen verflachen</li>
-</ol>
-</section>
-<section id="schritt-3-zusammenhang-von-bmi-und-bluthochdruck-darstellen" class="slide level2">
-<h2>Schritt 3: Zusammenhang von BMI und Bluthochdruck darstellen</h2>
+<section id="ziel-dieses-analyseergebnis-sollte-herauskommen" class="slide level2">
+<h2>Ziel: Dieses Analyseergebnis sollte herauskommen</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
 <p><img data-src="images/bmi_and_hypertension.png"></p>

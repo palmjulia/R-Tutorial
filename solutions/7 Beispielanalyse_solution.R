@@ -1,8 +1,10 @@
-###############################################
-### Vorbereitung: Lade das fhircrackr Paket ###
-###############################################
+####################################################################
+### Vorbereitung: Environment bereinigen, fhircrackr Paket laden ###
+####################################################################
 
+rm(list=ls())
 library(fhircrackr)
+
 
 ##############################################
 ### Schritt 1: BMI der Patienten berechnen ###
@@ -22,7 +24,8 @@ request <- fhir_url(url = "https://mii-agiop-3p.life.uni-leipzig.de/fhir",
 # Lade alle Bundles herunter
 bundles <- fhir_search(request = request)
 
-
+#backup falls Internetverbindung nicht geht: 
+#bundles <- fhir_unserialize(readRDS("backup/backup7a.rds"))
 
 
 #### 1.b Observation Ressourcen verflachen ####
@@ -105,6 +108,10 @@ body <- fhir_body(content = list("patient" = pat_ids,
 
 # Übergib body und request an fhir_search() und lade die Bundles herunter
 encounter_bundles <- fhir_search(request = request, body = body)
+
+#backup falls Internetverbindung nicht geht: 
+#encounter_bundles <- fhir_unserialize(readRDS("backup/backup7b.rds"))
+
 
 #### 2.b Encounter Ressourcen verflachen ####
 

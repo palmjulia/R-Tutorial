@@ -1,3 +1,10 @@
+#### Vorbereitung #####
+#Environment bereinigen
+rm(list=ls())
+
+
+
+
 #### Intro ####
 
 #erste Installation (für den Kurs nicht nötig)
@@ -7,7 +14,7 @@
 library(fhircrackr)
 
 #Vignetten anschauen
-browseVignettes(package = "fhircrackr")
+??fhircrackr
 
 
 
@@ -36,6 +43,11 @@ str(request)
 #Download
 bundles <- fhir_search(request = request,
                        max_bundles = 2)
+
+
+#backup falls Internetverbindung nicht geht: 
+#bundles <- fhir_unserialize(readRDS("backup/backup5a.rds"))
+
 #Ergebnis
 bundles
 
@@ -63,7 +75,8 @@ bundles <- fhir_search(request = request,
                        max_bundles = 2)
 
 
-
+#backup falls Internetverbindung nicht geht: 
+#bundles <- fhir_unserialize(readRDS("backup/backup5b.rds"))
 
 
 

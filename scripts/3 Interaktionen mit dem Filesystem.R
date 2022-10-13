@@ -1,3 +1,8 @@
+#### Vorbereitung #####
+#Environment bereinigen
+rm(list=ls())
+
+
 #### Working Directory ####
 #aktuelles Working directory abrufen
 getwd()

@@ -13,6 +13,41 @@ knitr:
 
 <!-- https://quarto.org/docs/reference/formats/presentations/revealjs.html -->
 
+# 0 Vorwort
+
+## Programm 
+
+:::: {.columns}
+
+::: {.column width="50%"}
+::: {.nonincremental}
+1) Intro
+2) Datentypen
+3) Interaktionen mit dem Filesystem
+4) Arbeit mit Tabellen
+:::
+:::
+
+::: {.column width="50%"}
+::: {.nonincremental}
+5) fhircrackr: Download von Daten
+6) fhircrackr: Verflachen von Daten
+7) Beispielanalyse
+:::
+:::
+:::
+
+:::{.callout-note}
+Mittagspause 12-13 Uhr
+
+Kleinere Pausen nach Bedarf
+:::
+
+## R Philosophie: Vorbemerkung für Kenner
+- Für diesen Kurs verwenden wir ausschließlich base R Funktionen (abgesehen von `fhircrackr`)
+- Viele der vorgestellten Prinzipien sind schneller, eleganter und effizienter in verschiedenen Paketen implementiert
+- Wir wollen uns hier aber nicht in Grabenkämpfe zwischen rivalisierenden Paradigmen verwickeln ;-)
+
 # 1 Intro
 
 ## Was ist R?
@@ -28,14 +63,14 @@ knitr:
 -   Zusätzliche Funktionen können als R-Pakete innerhalb der Session nachinstalliert werden.
 -   Jeder kann R-Pakete schreiben und zur Verfügung stellen.
 -   Zentrale Sammelstelle für R-Pakete ist das \*Comprehensive R Archive Network" ([CRAN](https://cran.r-project.org/))
-- Pubklikation auf CRAN erfordert einen Mindeststandard an technischer Qualität (keine inhaltliche Richtigkeit!) und ist einem Review-Prozess unterworfen.
+- Publikation auf CRAN erfordert einen Mindeststandard an technischer Qualität (keine inhaltliche Richtigkeit!) und ist einem Review-Prozess unterworfen.
 
 ## Tutorial Setup
 Vorbedingungen: 
 
 - Git Repository geclont: `git clone https://github.com/palmjulia/R-Tutorial.git`
 - Verzeichniswechsel ins lokale Repository `cd R-Tutorial/docker`
-- Docker Image gebaut mit `docker-compose build` oder gepullt mit `docker pull palmjulia/r-tutorial`
+- Docker Image gepullt mit `docker-compose pull`
 
 . . .
 
@@ -46,6 +81,7 @@ Sollte schon passiert sein!
 ## Tutorial Setup
 Für heute:
 
+- Diese Folien liegen im geclonten Repository unter *Tutorial.html*
 - Verzeichniswechsel ins lokale Repository `cd R-Tutorial/docker`
 - RSudio-Server starten mit `docker-compose up -d`
 - RStudio im Browser öffnen unter [127.0.0.1:8787](http://127.0.0.1:8787)
@@ -254,6 +290,13 @@ View(d)
 ```
 
 # 3 Interaktionen mit dem Filesystem
+
+## Vorbereitung
+```{.r}
+#### Vorbereitung #####
+#Environment bereinigen
+rm(list=ls())
+```
 
 ## Working directory
 - Jede R-Session ist mit einem Working directory assoziiert. 
@@ -487,6 +530,14 @@ data
 ```
 
 # 5 fhircrackr: Download von Daten
+
+## Vorbereitung
+```{.r}
+#### Vorbereitung #####
+#Environment bereinigen
+rm(list=ls())
+```
+
 ## Intro
 - In der MII entwickeltes R-Paket zum Verarbeiten von FHIR Ressourcen
 - Stabile Version auf [CRAN](https://cran.r-project.org/web/packages/fhircrackr/index.html), Development auf [GitHub](https://github.com/POLAR-fhiR/fhircrackr)
@@ -502,7 +553,7 @@ data
 library(fhircrackr)
 
 #Vignetten anschauen
-browseVignettes(package = "fhircrackr")
+??fhircrackr
 ```
 
 ## Exkurs: S4 Klassen
@@ -611,7 +662,8 @@ bundles
 - Bundles können auch als .RData-Objekte gespeichert werden
 - Speichern als .RData erfordert vorherige Serialisierung, da sonst External Pointer kaputt gehen
 
-. . .
+
+## Bundles Speichern und laden
 
 ```{.r code-line-numbers="1-4|1,6,7|1,9|1,11-14"}
 ### Als RData
@@ -834,28 +886,12 @@ View(tables$med)
 - Beantwortung anhand der fiktiven Beispieldaten auf https://mii-agiop-3p.life.uni-leipzig.de/fhir
 
 ## Praktische Übung
-Das Skript *7 Beispielanalyse.R* führt stückweise durch die notwendigen Schritte.
-
-. . .
-
-Für jeden Teilschritt:
-
-1) Selbstständiges Bearbeiten der Teilaufgabe
-2) Gemeinsames besprechen der Lösung
+- Das Skript *7 Beispielanalyse.R* führt stückweise durch die notwendigen Schritte.
+- Gruppenarbeit: Selbstständiges Bearbeiten der Teilaufgaben
+- Wir gehen herum und helfen bei Fragen
 
 
-## Schritt 1: BMI der Patienten berechnen
-a) Observations für Körpergewicht und Körpergröße herunterladen 
-b) Observation Ressourcen verflachen
-c) Daten vorbereiten
-d) BMI berechnen
-
-## Schritt 2: Herausfinden, wer Bluthochdruck als Komorbiditätsdiagnose hat
-a) Encounter- und Condition-Ressourcen über POST herunterladen
-b) Encounter Ressourcen verflachen
-c) Condition Ressourcen verflachen
-
-## Schritt 3: Zusammenhang von BMI und Bluthochdruck darstellen
+## Ziel: Dieses Analyseergebnis sollte herauskommen
 
 :::: {.columns}
 
