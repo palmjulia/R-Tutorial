@@ -11,17 +11,30 @@ FROM rocker/rstudio:4.2.1
 ## - quarto
 
 ## Install some system libraries we need
-RUN apt-get update -qq
-RUN apt-get install -yqq libxml2-dev libssl-dev curl
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # ca-certificates important for curl from https:
+    ca-certificates \
+    curl \
+    libssl-dev \
+    libxml2-dev && \
+    ## Clear caches:
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /tmp/* && \
+    rm -rf /root/.cache/pip/* && \
+    rm -rf /home/${USER}/.cache/pip/* && \
+    apt-get clean all && \
+    apt-get autoclean && \
+    apt-get autoremove -y
+    
+    
 
 ## Install some packages we need during this tutorial:
 RUN install2.r --error \
     fhircrackr \
+    ggplot2 \
     htmltools \
     jsonlite \
     knitr \
     rmarkdown \
-    ggplot2 \
     && rm -rf /tmp/downloaded_packages \
     && rm -rf /var/lib/apt/lists/*
-
