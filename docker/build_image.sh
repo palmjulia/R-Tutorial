@@ -2,9 +2,10 @@
 set -e 
 set -o pipefail
 
+source ./.env
 
 ## Variables:
-VERSION_TAG=4.2.1-9001
+VERSION_TAG=${IMAGE_VERSION_TAG}
 REGISTRY_PREFIX=joundso
 
 ## Should the docker building process build using caching? (true/false)
