@@ -30,6 +30,7 @@
 !/docker/Dockerfile
 !/docker/README.md
 !/docker/build_image.sh
+!/docker/.env
 
 !/images
 /images/*

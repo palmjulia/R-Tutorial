@@ -22,6 +22,7 @@ Daher ist vor dem Kurs eine kurze Vorbereitung notwendig, welche im folgenden be
 - Docker Image pullen mit `docker-compose pull` (Alternativ: Image selbst bauen, siehe README in R-Tutorial/docker)
 
 ## Test
+
 Docker Container starten: `docker-compose up -d`.
 
 Im Browser sollte jetzt nach einem Login unter der Adresse: [127.0.0.1:8787](http://127.0.0.1:8787) eine R-Studio-Oberfläche verfügbar sein.
@@ -31,4 +32,3 @@ Username: `rstudio`, Passwort: `pwd`.
 Wenn das der Fall ist, kann der Docker Container mit `docker-compose down` wieder heruntergefahren werden.
 
 Bei Problemen in der Vorbereitung bitte Kontakt auf nehmen mit  [Julia Palm](mailto:julia.palm@med.uni-jena.de) und/oder [Jonathan Mang](https://www.imi.med.fau.de/person/jonathan-mang/).
-

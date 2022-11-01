@@ -1,7 +1,7 @@
 version: "3.9" # optional since v1.27.0
 services:
   rstudio:
-    image: joundso/rstudio:4.2.1-9001
+    image: joundso/rstudio:${IMAGE_VERSION_TAG}
     # build: .
     restart: unless-stopped
     environment:
