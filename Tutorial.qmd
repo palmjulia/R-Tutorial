@@ -54,7 +54,7 @@ Kleinere Pausen nach Bedarf
 
 -   Statistik Software und Programmiersprache
 -   1995 von R. Gentleman und R. Ihaka entwickelt
--   Open source: [http://www.r-project.org](http://www.r-project.org){width="30%"} ![](images/Rlogo.png){width="100"}
+-   Open source: [http://www.r-project.org](http://www.r-project.org) ![](images/rlogo.png){width="100"}
 -   Am besten mit passender IDE zu verwenden ![](images/RStudio.png){width="100"}
 
 ## Aufbau
@@ -376,7 +376,7 @@ load("data/alldata.RData")
 # 4 Arbeit mit Tabellen
 ## Subsetting
 - Spalten können über Position und Namen ausgewählt werden
-- Zeilen können über Position und logische Bedinungen ausgwählt werden
+- Zeilen können über Position und logische Bedingungen ausgwählt werden
 
 . . .
 
@@ -390,7 +390,7 @@ data1$weight
 
 #Zeilen auswählen
 data1[c(1,3), ]
-data1[age > 40, ]
+data1[data1$age > 40, ]
 ```
 
 ## Spaltennamen ändern 
