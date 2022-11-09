@@ -414,7 +414,7 @@ colnames(data2)
 ## Faktoren
 - R's Datentyp für kategoriale Variablen
 - Im Gegensatz zu **character** für Vektoren/Variablen, die ein festes Set an Werten haben
-- Levels Können geordnet oder ungeordnet sein
+- Levels können geordnet oder ungeordnet sein
 
 . . .
 
