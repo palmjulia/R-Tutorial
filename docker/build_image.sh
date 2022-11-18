@@ -6,7 +6,7 @@ source ./.env
 
 ## Variables:
 VERSION_TAG=${IMAGE_VERSION_TAG}
-REGISTRY_PREFIX=joundso
+REGISTRY_PREFIX=${REGISTRY_PREFIX}
 
 ## Should the docker building process build using caching? (true/false)
 docker_build_with_cache=true
