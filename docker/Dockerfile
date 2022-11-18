@@ -35,9 +35,10 @@ RUN install2.r --error \
     htmltools \
     jsonlite \
     knitr \
+    remotes \
     rmarkdown \
     && rm -rf /tmp/downloaded_packages \
     && rm -rf /var/lib/apt/lists/*
 
 ## Install newest version of fhircrackr from GitHub:
-RUN R -q -e 'devtools::install_github(repo = "POLAR-fhiR/fhircrackr", ref = "master")'
+RUN R -q -e 'remotes::install_github(repo = "POLAR-fhiR/fhircrackr", ref = "master")'
