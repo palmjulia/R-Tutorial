@@ -1,7 +1,8 @@
 version: "3.9" # optional since v1.27.0
+name: "RStudio"
 services:
   rstudio:
-    image: joundso/rstudio:${IMAGE_VERSION_TAG}
+    image: ${REGISTRY_PREFIX}/rstudio:${IMAGE_VERSION_TAG}
     # build: .
     restart: unless-stopped
     environment:
@@ -11,3 +12,4 @@ services:
     volumes:
       - ..:/home/rstudio
     hostname: docker-rstudio
+

@@ -41,4 +41,4 @@ RUN install2.r --error \
     && rm -rf /var/lib/apt/lists/*
 
 ## Install newest version of fhircrackr from GitHub:
-RUN R -q -e 'remotes::install_github(repo = "POLAR-fhiR/fhircrackr", ref = "master")'
+#RUN R -q -e 'remotes::install_github(repo = "POLAR-fhiR/fhircrackr", ref = "master")'
