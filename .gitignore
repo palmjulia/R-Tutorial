@@ -45,3 +45,6 @@
 # !/Tutorial_files/*.R
 
 !/backup
+
+/.quarto/
+.Rproj.user

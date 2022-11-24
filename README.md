@@ -1,8 +1,8 @@
-# Kursmaterialen Tutorial R & fhircrackr
+# Kursmaterialen Datenanalysen auf Basis des MII Kerndatensatzes (FHIR)
 
-Kursdaten: Erlangen, 9. November 2022
+Kursdaten: Berlin, 6. Dezember 2022
 
-In diesem GitHub Repository sind alle Materialien hinterlegt, die für das Tutorial **R & fhircrackr** benötigt werden.
+In diesem GitHub Repository sind alle Materialien hinterlegt, die für das Tutorial **Datenanalysen auf Basis des MII Kerndatensatzes (FHIR)** benötigt werden.
 Damit wir im Kurs nicht von systemspezifischen Problemen aufgehalten werden, wird R und RStudio innerhalb eines Docker Containers betrieben werden, in dem alle Kursteilnehmer die gleichen Bedingungen vorfinden. 
 
 Daher ist vor dem Kurs eine kurze Vorbereitung notwendig, welche im folgenden beschrieben ist.
@@ -31,4 +31,4 @@ Username: `rstudio`, Passwort: `pwd`.
 
 Wenn das der Fall ist, kann der Docker Container mit `docker-compose down` wieder heruntergefahren werden.
 
-Bei Problemen in der Vorbereitung bitte Kontakt auf nehmen mit  [Julia Palm](mailto:julia.palm@med.uni-jena.de) und/oder [Jonathan Mang](https://www.imi.med.fau.de/person/jonathan-mang/).
+Bei Problemen in der Vorbereitung bitte Kontakt auf nehmen mit  [Julia Palm](mailto:julia.palm@med.uni-jena.de).

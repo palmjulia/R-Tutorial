@@ -7,10 +7,10 @@
 <link href="Tutorial_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="Tutorial_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="Tutorial_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.113">
+  <meta name="generator" content="quarto-1.1.189">
 
   <meta name="author" content="Julia Palm">
-  <title>Tutorial R &amp; fhircrackr</title>
+  <title>Datenanalysen auf Basis des MII Kerndatensatzes (FHIR)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -20,7 +20,7 @@
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: 1;}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -388,10 +388,10 @@
     <div class="slides">
 
 <section id="title-slide" class="center">
-  <h1 class="title">Tutorial R &amp; fhircrackr</h1>
+  <h1 class="title">Datenanalysen auf Basis des MII Kerndatensatzes (FHIR)</h1>
   <p class="author">Julia Palm</p>
   <p class="institute">Institut für Medizinische Statistik, Informatik und Datenwissenschaften, Universitätsklinikum Jena</p>
-  <p class="date">9. November 2022</p>
+  <p class="date">6. Dezember 2022</p>
 </section>
 
 <section class="slide level2">
@@ -400,7 +400,7 @@
 </section>
 <section>
 <section id="vorwort" class="title-slide slide level1 center">
-<h1>0 Vorwort</h1>
+<h1>Vorwort</h1>
 
 </section>
 <section id="programm" class="slide level2">
@@ -408,16 +408,17 @@
 <div class="columns">
 <div class="column" style="width:50%;">
 <div>
-<ol type="1">
-<li>Intro</li>
+<ol start="0" type="1">
+<li>Recap: Lesen von Implementation Guides</li>
+<li>R Intro</li>
 <li>Datentypen</li>
 <li>Interaktionen mit dem Filesystem</li>
-<li>Arbeit mit Tabellen</li>
 </ol>
 </div>
 </div><div class="column" style="width:50%;">
 <div>
-<ol start="5" type="1">
+<ol start="4" type="1">
+<li>Arbeit mit Tabellen</li>
 <li>fhircrackr: Download von Daten</li>
 <li>fhircrackr: Verflachen von Daten</li>
 <li>Beispielanalyse</li>
@@ -434,43 +435,108 @@
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>Mittagspause 12-13 Uhr</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div>
+<p>Mittagspause 12:30 - 13:30 Uhr</p>
+<p>Kaffepause 16:30 - 17:00 Uhr</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div>
 <p>Kleinere Pausen nach Bedarf</p>
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="recap-lesen-von-implementation-guides" class="title-slide slide level1 center">
+<h1>Recap: Lesen von Implementation Guides</h1>
+
 </section>
-<section id="r-philosophie-vorbemerkung-für-kenner" class="slide level2">
-<h2>R Philosophie: Vorbemerkung für Kenner</h2>
+<section id="implementation-guides" class="slide level2">
+<h2>Implementation Guides</h2>
 <ul>
-<li class="fragment">Für diesen Kurs verwenden wir ausschließlich base R Funktionen (abgesehen von <code>fhircrackr</code>)</li>
-<li class="fragment">Viele der vorgestellten Prinzipien sind schneller, eleganter und effizienter in verschiedenen Paketen implementiert</li>
-<li class="fragment">Wir wollen uns hier aber nicht in Grabenkämpfe zwischen rivalisierenden Paradigmen verwickeln ;-)</li>
+<li class="fragment">Implementation Guides (IG) beschreiben die (technische) Implementation der Kerndatensatz-Module<br>
+</li>
+<li class="fragment">Stabile Releases unter <a href="https://www.medizininformatik-initiative.de/de/basismodule-des-kerndatensatzes-der-mii">https://www.medizininformatik-initiative.de/de/basismodule-des-kerndatensatzes-der-mii</a></li>
+</ul>
+<div class="fragment">
+<p><img data-src="images/ModulFall.png" width="5000"></p>
+</div>
+</section>
+<section id="übersicht" class="slide level2">
+<h2>Übersicht</h2>
+<p>Einen Überblick über die relevanten Klassen gibt das UML.</p>
+
+<img data-src="images/uml.png" width="5000" class="r-stretch"></section>
+<section id="fhir-profile" class="slide level2">
+<h2>FHIR Profile</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li class="fragment"><p><a href="https://build.fhir.org/conformance-rules.html#mustSupport">MustSupport</a>: “Dieses Element muss unterstützt werden.”</p></li>
+<li class="fragment"><p><a href="https://build.fhir.org/conformance-rules.html#cardinality">Cardinality</a>: “Was sind die minimale und maximale Häufigkeit mit der das Element auftreten kann/muss?”</p></li>
+<li class="fragment"><p><a href="https://build.fhir.org/datatypes.html#2.1.27.0">Datentypen</a>: “Welcher Datentyp ist hier zu erwarten?”</p></li>
+<li class="fragment"><p><a href="https://build.fhir.org/profiling.html#binding">Bindings</a>: “Welche Werte sind in hier zu erwarten?”</p></li>
+</ul>
+</div><div class="column" style="width:40%;">
+<p><img data-src="images/ProfilEnc.png" width="5000"></p>
+</div>
+</div>
+</section>
+<section id="verfügbarkeit-von-fhir-elementen" class="slide level2">
+<h2>Verfügbarkeit von FHIR Elementen</h2>
+<ul>
+<li class="fragment">Dass ein Element in KDS konformen Ressourcen <em>sicher</em> vorhanden ist, garantiert nur eine Kardinalität von <code>1..1</code> oder <code>1..*</code></li>
+<li class="fragment">MustSupport dagegen sagt nichts über die sichere Verfügbarkeit des Elements aus</li>
+<li class="fragment">Elemente mit Kardinalität <code>1..1</code> müssen <em>genau</em> einmal vorkommen (z.B. <code>Encounter.class</code>)</li>
+<li class="fragment">Elemente mit <code>0..*</code> müssen gar nicht aber können beliebig oft vorkommen (z.B. <code>Encounter.identifier</code>)</li>
+</ul>
+</section>
+<section id="datentypen" class="slide level2">
+<h2>Datentypen</h2>
+<ul>
+<li class="fragment"><a href="https://build.fhir.org/datatypes.html#complex">Complex types</a> wie <a href="https://build.fhir.org/datatypes.html#codesystem">Coding</a> oder <a href="https://build.fhir.org/datatypes.html#Quantity">Quantity</a> für Elemente, die aus mehr als einer Information bestehen</li>
+<li class="fragment"><a href="https://build.fhir.org/datatypes.html#Quantity">Primitive types</a> wie <a href="https://build.fhir.org/datatypes.html#integer">integer</a>, <a href="https://build.fhir.org/datatypes.html#code">code</a> oder <a href="https://build.fhir.org/datatypes.html#boolean">boolean</a> für die kleinsten Bausteine, in die sich eine FHIR Ressource zerlegen lässt.</li>
+</ul>
+<div class="fragment">
+<div class="columns">
+<div class="column">
+<p><img data-src="images/code_vs_coding.PNG"></p>
+</div><div class="column">
+<p><img data-src="images/coding.PNG"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="bindings" class="slide level2">
+<h2>Bindings</h2>
+<ul>
+<li class="fragment">Binden ein Element (unterschiedlich streng) an eine Menge an Werten, typischerweise ein <em>ValueSet</em></li>
+<li class="fragment"><em>extensible</em>:
+<ul>
+<li class="fragment">z.B. ValueSet <a href="https://www.medizininformatik-initiative.de/Kerndatensatz/Modul_Fall/artifacts/EncounterClassDE.json">EncounterClassDE</a> für <code>Encounter.class</code></li>
+<li class="fragment">Werte aus dem ValueSet sollten verwendet werden, wenn nichts passt, dürfen weitere Werte dazu genommen werden</li>
+</ul></li>
+</ul>
+</section>
+<section id="bindings-1" class="slide level2">
+<h2>Bindings</h2>
+<ul>
+<li class="fragment"><em>required</em>:
+<ul>
+<li class="fragment">z.B. ValueSet <a href="https://www.medizininformatik-initiative.de/Kerndatensatz/Modul_Fall/artifacts/RestrictedEncounterStatus.json">Medizininformatik-Initiative - ValueSet - RestrictedEncounterStatus</a> für <code>Encounter.status</code></li>
+<li class="fragment">es muss einer der im ValueSet definierten Werte verwendet werden</li>
+</ul></li>
 </ul>
 </section></section>
 <section>
-<section id="intro" class="title-slide slide level1 center">
-<h1>1 Intro</h1>
+<section id="r-intro" class="title-slide slide level1 center">
+<h1>1 R Intro</h1>
 
-</section>
-<section id="was-ist-r" class="slide level2">
-<h2>Was ist R?</h2>
-<ul>
-<li class="fragment">Statistik Software und Programmiersprache</li>
-<li class="fragment">1995 von R. Gentleman und R. Ihaka entwickelt</li>
-<li class="fragment">Open source: <a href="http://www.r-project.org" width="30%">http://www.r-project.org</a> <img data-src="images/Rlogo.png" width="100"></li>
-<li class="fragment">Am besten mit passender IDE zu verwenden <img data-src="images/RStudio.png" width="100"></li>
-</ul>
-</section>
-<section id="aufbau" class="slide level2">
-<h2>Aufbau</h2>
-<ul>
-<li class="fragment">Bei Installation von R erhält man das sog. <em>base R</em>, das alle wichtigsten und grundsätzlichen Funktionalitäten enthält</li>
-<li class="fragment">Zusätzliche Funktionen können als R-Pakete innerhalb der Session nachinstalliert werden.</li>
-<li class="fragment">Jeder kann R-Pakete schreiben und zur Verfügung stellen.</li>
-<li class="fragment">Zentrale Sammelstelle für R-Pakete ist das *Comprehensive R Archive Network” (<a href="https://cran.r-project.org/">CRAN</a>)</li>
-<li class="fragment">Publikation auf CRAN erfordert einen Mindeststandard an technischer Qualität (keine inhaltliche Richtigkeit!) und ist einem Review-Prozess unterworfen.</li>
-</ul>
 </section>
 <section id="tutorial-setup" class="slide level2">
 <h2>Tutorial Setup</h2>
@@ -505,6 +571,33 @@
 <li class="fragment">RSudio-Server starten mit <code>docker-compose up -d</code></li>
 <li class="fragment">RStudio im Browser öffnen unter <a href="http://127.0.0.1:8787">127.0.0.1:8787</a></li>
 <li class="fragment">Username: <code>rstudio</code>, Passwort: <code>pwd</code></li>
+</ul>
+</section>
+<section id="was-ist-r" class="slide level2">
+<h2>Was ist R?</h2>
+<ul>
+<li class="fragment">Statistik Software und Programmiersprache</li>
+<li class="fragment">1995 von R. Gentleman und R. Ihaka entwickelt</li>
+<li class="fragment">Open source: <a href="http://www.r-project.org">http://www.r-project.org</a> <img data-src="images/rlogo.png" width="100"></li>
+<li class="fragment">Am besten mit passender IDE zu verwenden <img data-src="images/RStudio.png" width="100"></li>
+</ul>
+</section>
+<section id="aufbau" class="slide level2">
+<h2>Aufbau</h2>
+<ul>
+<li class="fragment">Bei Installation von R erhält man das sog. <em>base R</em>, das alle wichtigsten und grundsätzlichen Funktionalitäten enthält</li>
+<li class="fragment">Zusätzliche Funktionen können als R-Pakete innerhalb der Session nachinstalliert werden.</li>
+<li class="fragment">Jeder kann R-Pakete schreiben und zur Verfügung stellen.</li>
+<li class="fragment">Zentrale Sammelstelle für R-Pakete ist das *Comprehensive R Archive Network” (<a href="https://cran.r-project.org/">CRAN</a>)</li>
+<li class="fragment">Publikation auf CRAN erfordert einen Mindeststandard an technischer Qualität (keine inhaltliche Richtigkeit!) und ist einem Review-Prozess unterworfen.</li>
+</ul>
+</section>
+<section id="r-philosophie-vorbemerkung-für-kenner" class="slide level2">
+<h2>R Philosophie: Vorbemerkung für Kenner</h2>
+<ul>
+<li class="fragment">Für diesen Kurs verwenden wir ausschließlich base R Funktionen (abgesehen von <code>fhircrackr</code>)</li>
+<li class="fragment">Viele der vorgestellten Prinzipien sind schneller, eleganter und effizienter in verschiedenen Paketen implementiert</li>
+<li class="fragment">Wir wollen uns hier aber nicht in Grabenkämpfe zwischen rivalisierenden Paradigmen verwickeln ;-)</li>
 </ul>
 </section>
 <section id="rstudio" class="slide level2">
@@ -600,7 +693,7 @@
 <span id="cb5-5"><a href="#cb5-5"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section></section>
 <section>
-<section id="datentypen" class="title-slide slide level1 center">
+<section id="datentypen-1" class="title-slide slide level1 center">
 <h1>2 Datentypen</h1>
 
 </section>
@@ -826,7 +919,7 @@
 <h2>Subsetting</h2>
 <ul>
 <li class="fragment">Spalten können über Position und Namen ausgewählt werden</li>
-<li class="fragment">Zeilen können über Position und logische Bedinungen ausgwählt werden</li>
+<li class="fragment">Zeilen können über Position und logische Bedingungen ausgwählt werden</li>
 </ul>
 <div class="fragment">
 <div class="sourceCode" id="cb16" data-code-line-numbers="1-3|5-6|8-19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co">#Spalten auswählen</span></span>
@@ -838,7 +931,7 @@
 <span id="cb16-7"><a href="#cb16-7"></a></span>
 <span id="cb16-8"><a href="#cb16-8"></a><span class="co">#Zeilen auswählen</span></span>
 <span id="cb16-9"><a href="#cb16-9"></a>data1[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>), ]</span>
-<span id="cb16-10"><a href="#cb16-10"></a>data1[age <span class="sc">&gt;</span> <span class="dv">40</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-10"><a href="#cb16-10"></a>data1[data1<span class="sc">$</span>age <span class="sc">&gt;</span> <span class="dv">40</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="spaltennamen-ändern" class="slide level2">
@@ -863,7 +956,7 @@
 <ul>
 <li class="fragment">R’s Datentyp für kategoriale Variablen</li>
 <li class="fragment">Im Gegensatz zu <strong>character</strong> für Vektoren/Variablen, die ein festes Set an Werten haben</li>
-<li class="fragment">Levels Können geordnet oder ungeordnet sein</li>
+<li class="fragment">Levels können geordnet oder ungeordnet sein</li>
 </ul>
 <div class="fragment">
 <div class="sourceCode" id="cb18" data-code-line-numbers="1-4|5-9|10-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co">#unordered</span></span>
@@ -986,7 +1079,7 @@
 <span id="cb24-2"><a href="#cb24-2"></a><span class="co">#Environment bereinigen</span></span>
 <span id="cb24-3"><a href="#cb24-3"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="intro-1" class="slide level2">
+<section id="intro" class="slide level2">
 <h2>Intro</h2>
 <ul>
 <li class="fragment">In der MII entwickeltes R-Paket zum Verarbeiten von FHIR Ressourcen</li>

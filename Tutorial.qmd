@@ -1,6 +1,6 @@
 ---
-title: "Tutorial R & fhircrackr"
-date: "9. November 2022"
+title: "Datenanalysen auf Basis des MII Kerndatensatzes (FHIR)"
+date: "6. Dezember 2022"
 format: 
   revealjs:
     theme: dark
@@ -13,7 +13,7 @@ knitr:
 
 <!-- https://quarto.org/docs/reference/formats/presentations/revealjs.html -->
 
-# 0 Vorwort
+# Vorwort
 
 ## Programm 
 
@@ -21,15 +21,16 @@ knitr:
 
 ::: {.column width="50%"}
 ::: {.nonincremental}
-1) Intro
+0) Recap: Lesen von Implementation Guides 
+1) R Intro
 2) Datentypen
 3) Interaktionen mit dem Filesystem
-4) Arbeit mit Tabellen
 :::
 :::
 
 ::: {.column width="50%"}
 ::: {.nonincremental}
+4) Arbeit mit Tabellen
 5) fhircrackr: Download von Daten
 6) fhircrackr: Verflachen von Daten
 7) Beispielanalyse
@@ -38,32 +39,98 @@ knitr:
 :::
 
 :::{.callout-note}
-Mittagspause 12-13 Uhr
+:::: {.columns}
 
-Kleinere Pausen nach Bedarf
+::: {.column width="50%"}
+::: {.nonincremental}
+Mittagspause 12:30 - 13:30 Uhr
+
+Kaffepause 16:30 - 17:00 Uhr
+:::
 :::
 
-## R Philosophie: Vorbemerkung für Kenner
-- Für diesen Kurs verwenden wir ausschließlich base R Funktionen (abgesehen von `fhircrackr`)
-- Viele der vorgestellten Prinzipien sind schneller, eleganter und effizienter in verschiedenen Paketen implementiert
-- Wir wollen uns hier aber nicht in Grabenkämpfe zwischen rivalisierenden Paradigmen verwickeln ;-)
+::: {.column width="50%"}
+::: {.nonincremental}
+Kleinere Pausen nach Bedarf
+:::
+:::
+:::
 
-# 1 Intro
+:::
 
-## Was ist R?
+# Recap: Lesen von Implementation Guides 
 
--   Statistik Software und Programmiersprache
--   1995 von R. Gentleman und R. Ihaka entwickelt
--   Open source: [http://www.r-project.org](http://www.r-project.org) ![](images/rlogo.png){width="100"}
--   Am besten mit passender IDE zu verwenden ![](images/RStudio.png){width="100"}
+## Implementation Guides
+- Implementation Guides (IG) beschreiben die (technische) Implementation der Kerndatensatz-Module  
+- Stabile Releases unter [https://www.medizininformatik-initiative.de/de/basismodule-des-kerndatensatzes-der-mii](https://www.medizininformatik-initiative.de/de/basismodule-des-kerndatensatzes-der-mii) 
 
-## Aufbau
+. . .
 
--   Bei Installation von R erhält man das sog. *base R*, das alle wichtigsten und grundsätzlichen Funktionalitäten enthält
--   Zusätzliche Funktionen können als R-Pakete innerhalb der Session nachinstalliert werden.
--   Jeder kann R-Pakete schreiben und zur Verfügung stellen.
--   Zentrale Sammelstelle für R-Pakete ist das \*Comprehensive R Archive Network" ([CRAN](https://cran.r-project.org/))
-- Publikation auf CRAN erfordert einen Mindeststandard an technischer Qualität (keine inhaltliche Richtigkeit!) und ist einem Review-Prozess unterworfen.
+![](images/ModulFall.png){width="5000"}
+
+## Übersicht
+Einen Überblick über die relevanten Klassen gibt das UML.
+
+![](images/uml.png){width="5000"}
+
+## FHIR Profile
+:::: {.columns}
+
+::: {.column width="60%"}
+- [MustSupport](https://build.fhir.org/conformance-rules.html#mustSupport): "Dieses Element muss unterstützt werden." 
+
+- [Cardinality](https://build.fhir.org/conformance-rules.html#cardinality):  "Was sind die minimale und maximale Häufigkeit mit der das Element auftreten kann/muss?"
+
+- [Datentypen](https://build.fhir.org/datatypes.html#2.1.27.0): "Welcher Datentyp ist hier zu erwarten?"
+
+- [Bindings](https://build.fhir.org/profiling.html#binding): "Welche Werte sind in hier zu erwarten?"
+:::
+
+::: {.column width="40%"}
+![](images/ProfilEnc.png){width="5000"}
+::: 
+::::
+
+## Verfügbarkeit von FHIR Elementen
+- Dass ein Element in KDS konformen Ressourcen *sicher* vorhanden ist, garantiert nur eine Kardinalität von `1..1` oder `1..*`
+- MustSupport dagegen sagt nichts über die sichere Verfügbarkeit des Elements aus
+- Elemente mit Kardinalität `1..1` müssen *genau* einmal vorkommen (z.B. `Encounter.class`)
+- Elemente mit `0..*` müssen gar nicht aber können beliebig oft vorkommen (z.B. `Encounter.identifier`)
+
+## Datentypen
+- [Complex types](https://build.fhir.org/datatypes.html#complex) wie [Coding](https://build.fhir.org/datatypes.html#codesystem) oder [Quantity](https://build.fhir.org/datatypes.html#Quantity) für Elemente, die aus mehr als einer Information bestehen
+- [Primitive types](https://build.fhir.org/datatypes.html#Quantity) wie [integer](https://build.fhir.org/datatypes.html#integer), [code](https://build.fhir.org/datatypes.html#code) oder [boolean](https://build.fhir.org/datatypes.html#boolean) für die kleinsten Bausteine, in die sich eine FHIR Ressource zerlegen lässt.
+
+. . . 
+
+
+:::: {.columns}
+
+::: {.column}
+![](images/code_vs_coding.PNG)
+:::
+
+::: {.column}
+![](images/coding.PNG)
+:::
+
+::::
+
+
+## Bindings
+- Binden ein Element (unterschiedlich streng) an eine Menge an Werten, typischerweise ein *ValueSet*
+- *extensible*: 
+  - z.B. ValueSet [EncounterClassDE](https://www.medizininformatik-initiative.de/Kerndatensatz/Modul_Fall/artifacts/EncounterClassDE.json) für `Encounter.class`
+  - Werte aus dem ValueSet sollten verwendet werden, wenn nichts passt, dürfen weitere Werte dazu genommen werden
+
+## Bindings
+- *required*:
+  - z.B. ValueSet [Medizininformatik-Initiative - ValueSet - RestrictedEncounterStatus](https://www.medizininformatik-initiative.de/Kerndatensatz/Modul_Fall/artifacts/RestrictedEncounterStatus.json) für `Encounter.status`
+  - es muss einer der im ValueSet definierten Werte verwendet werden
+
+
+# 1 R Intro
+
 
 ## Tutorial Setup
 Vorbedingungen: 
@@ -87,6 +154,25 @@ Für heute:
 - RStudio im Browser öffnen unter [127.0.0.1:8787](http://127.0.0.1:8787)
 - Username: `rstudio`, Passwort: `pwd` 
 
+## Was ist R?
+
+-   Statistik Software und Programmiersprache
+-   1995 von R. Gentleman und R. Ihaka entwickelt
+-   Open source: [http://www.r-project.org](http://www.r-project.org) ![](images/rlogo.png){width="100"}
+-   Am besten mit passender IDE zu verwenden ![](images/RStudio.png){width="100"}
+
+## Aufbau
+
+-   Bei Installation von R erhält man das sog. *base R*, das alle wichtigsten und grundsätzlichen Funktionalitäten enthält
+-   Zusätzliche Funktionen können als R-Pakete innerhalb der Session nachinstalliert werden.
+-   Jeder kann R-Pakete schreiben und zur Verfügung stellen.
+-   Zentrale Sammelstelle für R-Pakete ist das \*Comprehensive R Archive Network" ([CRAN](https://cran.r-project.org/))
+- Publikation auf CRAN erfordert einen Mindeststandard an technischer Qualität (keine inhaltliche Richtigkeit!) und ist einem Review-Prozess unterworfen.
+
+## R Philosophie: Vorbemerkung für Kenner
+- Für diesen Kurs verwenden wir ausschließlich base R Funktionen (abgesehen von `fhircrackr`)
+- Viele der vorgestellten Prinzipien sind schneller, eleganter und effizienter in verschiedenen Paketen implementiert
+- Wir wollen uns hier aber nicht in Grabenkämpfe zwischen rivalisierenden Paradigmen verwickeln ;-)
 
 ## RStudio
 
